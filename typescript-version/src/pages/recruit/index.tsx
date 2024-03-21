@@ -112,53 +112,12 @@ const icons = {
   AccountBoxMultipleOutline
 }
 
-const Icons = () => {
-  const renderIconGrids = () => {
-    return Object.keys(icons).map(key => {
-      const IconTag = icons[key as keyof typeof icons]
-
-      return (
-        <Grid item key={key}>
-          <Tooltip arrow title={key} placement='top'>
-            <Card>
-              <CardContent sx={{ display: 'flex' }}>
-                <IconTag />
-              </CardContent>
-            </Card>
-          </Tooltip>
-        </Grid>
-      )
-    })
-  }
-
+const Recruit = () => {
   return (
     <Grid container spacing={6}>
-      <Grid item xs={12}>
-        <Typography variant='h5'>
-          <Link href='https://materialdesignicons.com/' target='_blank'>
-            Material Design Icons
-          </Link>
-        </Typography>
-        <Typography variant='body2'>Material Design Icons from the Community</Typography>
-      </Grid>
-      <Grid item xs={12}>
-        <Grid container spacing={6}>
-          {renderIconGrids()}
-        </Grid>
-      </Grid>
-      <Grid item xs={12} sx={{ textAlign: 'center' }}>
-        <Button
-          target='_blank'
-          rel='noreferrer'
-          component={Link}
-          variant='contained'
-          href='https://materialdesignicons.com/'
-        >
-          View All Material Design Icons
-        </Button>
-      </Grid>
+      recruit
     </Grid>
   )
 }
 
-export default Icons
+export default Recruit
