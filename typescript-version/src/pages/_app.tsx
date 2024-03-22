@@ -3,6 +3,7 @@ import Head from 'next/head'
 import { Router } from 'next/router'
 import type { NextPage } from 'next'
 import type { AppProps } from 'next/app'
+import { useRecoilState } from 'recoil'
 
 // ** Loader Import
 import NProgress from 'nprogress'
@@ -29,6 +30,9 @@ import 'react-perfect-scrollbar/dist/css/styles.css'
 
 // ** Global css styles
 import '../../styles/globals.css'
+
+// ** recoil
+import { RecoilRoot } from 'recoil'
 
 // ** Extend App Props with Emotion
 type ExtendedAppProps = AppProps & {
@@ -59,19 +63,21 @@ const App = (props: ExtendedAppProps) => {
   const getLayout = Component.getLayout ?? (page => <UserLayout>{page}</UserLayout>)
 
   return (
-    <CacheProvider value={emotionCache}>
-      <Head>
-        <title>we meet sport</title>
-      </Head>
+    <RecoilRoot>
+      <CacheProvider value={emotionCache}>
+        <Head>
+          <title>we meet sport</title>
+        </Head>
 
-      <SettingsProvider>
-        <SettingsConsumer>
-          {({ settings }) => {
-            return <ThemeComponent settings={settings}>{getLayout(<Component {...pageProps} />)}</ThemeComponent>
-          }}
-        </SettingsConsumer>
-      </SettingsProvider>
-    </CacheProvider>
+        <SettingsProvider>
+          <SettingsConsumer>
+            {({ settings }) => {
+              return <ThemeComponent settings={settings}>{getLayout(<Component {...pageProps} />)}</ThemeComponent>
+            }}
+          </SettingsConsumer>
+        </SettingsProvider>
+      </CacheProvider>
+    </RecoilRoot>
   )
 }
 
