@@ -22,6 +22,8 @@ import LogoutVariant from 'mdi-material-ui/LogoutVariant'
 import AccountOutline from 'mdi-material-ui/AccountOutline'
 import MessageOutline from 'mdi-material-ui/MessageOutline'
 import HelpCircleOutline from 'mdi-material-ui/HelpCircleOutline'
+import { useRecoilState } from 'recoil'
+import { sessionState } from 'src/recoil/user'
 
 // ** Styled Components
 const BadgeContentSpan = styled('span')(({ theme }) => ({
@@ -35,6 +37,7 @@ const BadgeContentSpan = styled('span')(({ theme }) => ({
 const UserDropdown = () => {
   // ** States
   const [anchorEl, setAnchorEl] = useState<Element | null>(null)
+  const [session, setSessionState] = useRecoilState(sessionState)
 
   // ** Hooks
   const router = useRouter()
@@ -44,6 +47,14 @@ const UserDropdown = () => {
   }
 
   const handleDropdownClose = (url?: string) => {
+    // test code
+    if (url && url === '/login') {
+      setSessionState(prev => ({
+        ...prev,
+        state: false
+      }))
+    }
+
     if (url) {
       router.push(url)
     }
@@ -144,7 +155,7 @@ const UserDropdown = () => {
           </Box>
         </MenuItem>
         <Divider />
-        <MenuItem sx={{ py: 2 }} onClick={() => handleDropdownClose('/pages/login')}>
+        <MenuItem sx={{ py: 2 }} onClick={() => handleDropdownClose('/login')}>
           <LogoutVariant sx={{ marginRight: 2, fontSize: '1.375rem', color: 'text.secondary' }} />
           Logout
         </MenuItem>

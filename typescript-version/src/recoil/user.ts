@@ -21,14 +21,6 @@ export const userState = atom({
   }
 })
 
-export const loginInfoState = atom({
-  key: 'loginInfo',
-  default: {
-    email: '',
-    password: ''
-  }
-})
-
 export const registerInfoState = atom({
   key: 'registerInfo',
   default: {
