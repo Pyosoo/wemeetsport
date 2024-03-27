@@ -1,5 +1,5 @@
 // ** React Imports
-import { ChangeEvent, MouseEvent, ReactNode, useState } from 'react'
+import { ChangeEvent, MouseEvent, ReactNode, useEffect, useState } from 'react'
 
 // ** Next Imports
 import Link from 'next/link'
@@ -31,6 +31,7 @@ import FooterIllustrationsV1 from 'src/views/pages/auth/FooterIllustration'
 import { useRecoilState } from 'recoil'
 import { sessionState } from 'src/recoil/user'
 import { useRecoilLogger } from 'src/hooks/useRecoilLogger'
+import { loginApi, refreshToken, registerApi, signUpApi } from 'src/apis/userApi'
 
 // ** Styled Components
 const Card = styled(MuiCard)<CardProps>(({ theme }) => ({
@@ -53,6 +54,10 @@ const LoginPage = () => {
 
   // ** Hook
   const router = useRouter()
+
+  useEffect(() => {
+    registerApi()
+  }, [])
 
   useRecoilLogger()
 
@@ -121,11 +126,15 @@ const LoginPage = () => {
               variant='contained'
               sx={{ marginBottom: 7 }}
               onClick={() => {
-                setSessionState(prev => ({
-                  ...prev,
-                  state: true
-                }))
-                router.push('/')
+                // setSessionState(prev => ({
+                //   ...prev,
+                //   state: true
+                // }))
+                // router.push('/')
+                loginApi(email, password)
+
+                // refreshToken()
+                // signUpApi()
               }}
             >
               로그인
