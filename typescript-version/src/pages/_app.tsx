@@ -32,6 +32,7 @@ import '../../styles/globals.css'
 
 // ** recoil
 import { RecoilRoot } from 'recoil'
+import CustomSnackbar from 'src/components/snackbar'
 
 // ** Extend App Props with Emotion
 type ExtendedAppProps = AppProps & {
@@ -71,7 +72,12 @@ const App = (props: ExtendedAppProps) => {
         <SettingsProvider>
           <SettingsConsumer>
             {({ settings }) => {
-              return <ThemeComponent settings={settings}>{getLayout(<Component {...pageProps} />)}</ThemeComponent>
+              return (
+                <ThemeComponent settings={settings}>
+                  {getLayout(<Component {...pageProps} />)}
+                  <CustomSnackbar />
+                </ThemeComponent>
+              )
             }}
           </SettingsConsumer>
         </SettingsProvider>

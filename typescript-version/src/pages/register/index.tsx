@@ -39,6 +39,9 @@ import BlankLayout from 'src/@core/layouts/BlankLayout'
 import FooterIllustrationsV1 from 'src/views/pages/auth/FooterIllustration'
 import { useRecoilState } from 'recoil'
 import { registerInfoState } from 'src/recoil/user'
+import { useRecoilLogger } from 'src/hooks/useRecoilLogger'
+import { signUpApi } from 'src/apis/userApi'
+import { snackbarState } from 'src/recoil/stats'
 
 interface State {
   password: string
@@ -72,6 +75,7 @@ const RegisterPage = () => {
     showPassword: false
   })
   const [registerInfo, setRegisterInfoState] = useRecoilState(registerInfoState)
+  const [snackbar, setSnackbarState] = useRecoilState(snackbarState)
 
   // ** Hook
   const theme = useTheme()
@@ -92,6 +96,28 @@ const RegisterPage = () => {
       [key]: val
     }))
   }
+
+  const signUp = async () => {
+    console.log('hi')
+    setSnackbarState(prev => ({
+      ...prev,
+      open: true,
+      message: '회원가입에 성공하였습니다. 로그인해주세요.'
+    }))
+    return
+    const res = await signUpApi(registerInfo.nickname, registerInfo.email, registerInfo.password, registerInfo.mobile)
+    if (res && res.success) {
+      setSnackbarState(prev => ({
+        ...prev,
+        open: true,
+        message: '회원가입에 성공하였습니다. 로그인해주세요.'
+      }))
+      // router to '/'
+      // snackbar?
+    }
+  }
+
+  useRecoilLogger()
 
   return (
     <Box className='content-center'>
@@ -178,7 +204,14 @@ const RegisterPage = () => {
                 </Fragment>
               }
             /> */}
-            <Button fullWidth size='large' type='submit' variant='contained' sx={{ marginBottom: 7, marginTop: 10 }}>
+            <Button
+              onClick={signUp}
+              fullWidth
+              size='large'
+              type='submit'
+              variant='contained'
+              sx={{ marginBottom: 7, marginTop: 10 }}
+            >
               Sign up
             </Button>
             <Box sx={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', justifyContent: 'center' }}>

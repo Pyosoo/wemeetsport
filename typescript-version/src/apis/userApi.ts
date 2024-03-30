@@ -1,6 +1,6 @@
-import axios from 'axios'
+import axios, { AxiosResponse } from 'axios'
 
-const API_URL = 'http://172.30.1.45:8080/member/login'
+const API_URL = 'http://172.30.1.45:8080/'
 
 interface registerType {
   email: string
@@ -8,44 +8,51 @@ interface registerType {
   nickname: string
   mobile: string
 }
-
-export const registerApi = () => {
-  // axios.get(API_URL).then(r => r)
+interface SignUpResponse {
+  success: boolean
+  data: any // 적절한 데이터 타입으로 변경해 주세요
 }
 
-export const loginApi = (email: string, password: string) => {
-  const res = axios
-    .post(API_URL, {
+export const loginApi = async (email: string, password: string) => {
+  const res = await axios
+    .post(`${API_URL}/member/login`, {
       email,
       mpw: password
     })
-    .then(r => r)
+    .then((response: AxiosResponse<SignUpResponse>) => response.data)
+    .catch(err => {
+      console.log(err)
+    })
 
   return res
 }
 
-export const refreshToken = () => {
-  const res = axios
-    .post('http://172.30.1.45:8080/refreshToken', {
-      accessToken:
-        'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3MTE2MTM0MTksImlhdCI6MTcxMTUyNzAxOSwiZW1haWwiOiJhcGl1c2VyMSJ9.MDrMhMCwj2ul6qVb2w4nH5GlSeBabNhUQ9XG2Kd3VUE',
-      refreshToken:
-        'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3MTQxMTg3ODAsImlhdCI6MTcxMTUyNjc4MCwiZW1haWwiOiJhcGl1c2VyMSJ9.CpZWZEUnSCt7TQzE45xE_lY9PbqqQX0Q10G6Acxg7rk'
+export const refreshToken = async (accessToken: string, refreshToken: string) => {
+  const res = await axios
+    .post(`${API_URL}/refreshToken`, {
+      accessToken,
+      refreshToken
     })
-    .then(r => r)
+    .then((response: AxiosResponse<SignUpResponse>) => response.data)
+    .catch(err => {
+      console.log(err)
+    })
 
   return res
 }
 
-export const signUpApi = () => {
+export const signUpApi = (nickname: string, email: string, password: string, mobile: string) => {
   const res = axios
-    .post('http://172.30.1.45:8080/member/signup', {
-      mpw: '123',
-      nickname: '123',
-      email: '123',
-      mobile: '123'
+    .post(`${API_URL}/member/signup`, {
+      nickname,
+      email,
+      password,
+      mobile
     })
-    .then(r => r)
+    .then((response: AxiosResponse<SignUpResponse>) => response.data)
+    .catch(err => {
+      console.log(err)
+    })
 
   return res
 }

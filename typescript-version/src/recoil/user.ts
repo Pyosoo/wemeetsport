@@ -12,6 +12,14 @@ export const sessionState = atom({
   }
 })
 
+export const loginState = atom({
+  key: 'loginInfo',
+  default: {
+    email: '',
+    password: ''
+  }
+})
+
 export const userState = atom({
   key: 'user',
   default: {

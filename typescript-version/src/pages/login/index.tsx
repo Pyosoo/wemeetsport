@@ -29,9 +29,8 @@ import BlankLayout from 'src/@core/layouts/BlankLayout'
 // ** Demo Imports
 import FooterIllustrationsV1 from 'src/views/pages/auth/FooterIllustration'
 import { useRecoilState } from 'recoil'
-import { sessionState } from 'src/recoil/user'
+import { sessionState, loginState } from 'src/recoil/user'
 import { useRecoilLogger } from 'src/hooks/useRecoilLogger'
-import { loginApi, refreshToken, registerApi, signUpApi } from 'src/apis/userApi'
 
 // ** Styled Components
 const Card = styled(MuiCard)<CardProps>(({ theme }) => ({
@@ -51,13 +50,10 @@ const LoginPage = () => {
   const [passwordHide, setPasswordHide] = useState(true)
 
   const [session, setSessionState] = useRecoilState(sessionState)
+  const [loginInfo, setLoginState] = useRecoilState(loginState)
 
   // ** Hook
   const router = useRouter()
-
-  useEffect(() => {
-    registerApi()
-  }, [])
 
   useRecoilLogger()
 
@@ -80,8 +76,13 @@ const LoginPage = () => {
           </Box>
           <form noValidate autoComplete='off' onSubmit={e => e.preventDefault()}>
             <TextField
-              value={email}
-              onChange={(event: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => setEmail(event.target.value)}
+              value={loginInfo.email}
+              onChange={(event: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) =>
+                setLoginState(prev => ({
+                  ...prev,
+                  email: event.target.value
+                }))
+              }
               autoFocus
               fullWidth
               id='email'
@@ -91,11 +92,14 @@ const LoginPage = () => {
             <FormControl fullWidth>
               <InputLabel htmlFor='auth-login-password'>Password</InputLabel>
               <OutlinedInput
-                label='Password'
-                value={password}
                 id='auth-login-password'
+                label='Password'
+                value={loginInfo.password}
                 onChange={(event: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) =>
-                  setPassword(event.target.value)
+                  setLoginState(prev => ({
+                    ...prev,
+                    password: event.target.value
+                  }))
                 }
                 type={passwordHide ? 'password' : 'text'}
                 endAdornment={
@@ -126,13 +130,12 @@ const LoginPage = () => {
               variant='contained'
               sx={{ marginBottom: 7 }}
               onClick={() => {
-                // setSessionState(prev => ({
-                //   ...prev,
-                //   state: true
-                // }))
-                // router.push('/')
-                loginApi(email, password)
-
+                setSessionState(prev => ({
+                  ...prev,
+                  state: true
+                }))
+                router.push('/')
+                // loginApi(email, password)
                 // refreshToken()
                 // signUpApi()
               }}
