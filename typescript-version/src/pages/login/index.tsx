@@ -31,6 +31,8 @@ import FooterIllustrationsV1 from 'src/views/pages/auth/FooterIllustration'
 import { useRecoilState } from 'recoil'
 import { sessionState, loginState } from 'src/recoil/user'
 import { useRecoilLogger } from 'src/hooks/useRecoilLogger'
+import { loginApi } from 'src/apis/userApi'
+import { jwtDecode } from 'jwt-decode'
 
 // ** Styled Components
 const Card = styled(MuiCard)<CardProps>(({ theme }) => ({
@@ -59,6 +61,43 @@ const LoginPage = () => {
 
   const handleMouseDownPassword = (event: MouseEvent<HTMLButtonElement>) => {
     event.preventDefault()
+  }
+
+  interface sessionInterface {
+    state: boolean
+    email: string
+    nickName: string
+    mobile: string
+    exp: string
+    iat: string
+    accessToken: string
+    refreshToken: string
+  }
+
+  const handleLogIn = async () => {
+    const res = await loginApi(loginInfo.email, loginInfo.password)
+    if (
+      res
+      // && res.success
+    ) {
+      console.log(res)
+      const resData: sessionInterface = jwtDecode(res.accessToken)
+      console.log(resData)
+      setSessionState(prev => ({
+        ...prev,
+        state: true,
+        email: resData.email,
+        nickName: resData.nickName,
+        mobile: resData.mobile,
+        exp: resData.exp,
+        iat: resData.iat,
+        accessToken: res.accessToken,
+        refreshToken: res.refreshToken
+      }))
+      router.push('/')
+    } else {
+      console.log(res)
+    }
   }
 
   return (
@@ -124,22 +163,7 @@ const LoginPage = () => {
                 <LinkStyled onClick={e => e.preventDefault()}>Forgot Password?</LinkStyled>
               </Link>
             </Box>
-            <Button
-              fullWidth
-              size='large'
-              variant='contained'
-              sx={{ marginBottom: 7 }}
-              onClick={() => {
-                setSessionState(prev => ({
-                  ...prev,
-                  state: true
-                }))
-                router.push('/')
-                // loginApi(email, password)
-                // refreshToken()
-                // signUpApi()
-              }}
-            >
+            <Button fullWidth size='large' variant='contained' sx={{ marginBottom: 7 }} onClick={handleLogIn}>
               로그인
             </Button>
             <Box sx={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', justifyContent: 'center' }}>

@@ -1,5 +1,5 @@
 // ** React Imports
-import { useState, Fragment, ChangeEvent, MouseEvent, ReactNode } from 'react'
+import { useState, Fragment, ChangeEvent, MouseEvent, ReactNode, useEffect } from 'react'
 
 // ** Next Imports
 import Link from 'next/link'
@@ -41,7 +41,8 @@ import { useRecoilState } from 'recoil'
 import { registerInfoState } from 'src/recoil/user'
 import { useRecoilLogger } from 'src/hooks/useRecoilLogger'
 import { signUpApi } from 'src/apis/userApi'
-import { snackbarState } from 'src/recoil/stats'
+import { snackbarState } from 'src/recoil/states'
+import router from 'next/router'
 
 interface State {
   password: string
@@ -98,26 +99,46 @@ const RegisterPage = () => {
   }
 
   const signUp = async () => {
-    console.log('hi')
-    setSnackbarState(prev => ({
-      ...prev,
-      open: true,
-      message: '회원가입에 성공하였습니다. 로그인해주세요.'
-    }))
-    return
-    const res = await signUpApi(registerInfo.nickname, registerInfo.email, registerInfo.password, registerInfo.mobile)
+    const phoneNumberRegex = /^01(?:0|1|[6-9])(?:\d{3}|\d{4})\d{4}$/
+    console.log(phoneNumberRegex.test(registerInfo.mobile))
+    if (!phoneNumberRegex.test(registerInfo.mobile)) {
+      setSnackbarState(prev => ({
+        ...prev,
+        open: true,
+        message: '모바일 정보를 확인해주세요.'
+      }))
+      return
+    }
+
+    const res = await signUpApi(registerInfo.nickName, registerInfo.email, registerInfo.password, registerInfo.mobile)
     if (res && res.success) {
       setSnackbarState(prev => ({
         ...prev,
         open: true,
         message: '회원가입에 성공하였습니다. 로그인해주세요.'
       }))
-      // router to '/'
-      // snackbar?
+      router.push('/login')
+    } else {
+      // setSnackbarState(prev => ({
+      //   ...prev,
+      //   open: true,
+      //   message: res
+      // }))
+      console.log(res)
     }
   }
-
   useRecoilLogger()
+
+  useEffect(() => {
+    return () => {
+      setRegisterInfoState(prev => ({
+        email: '',
+        password: '',
+        nickName: '',
+        mobile: ''
+      }))
+    }
+  }, [])
 
   return (
     <Box className='content-center'>
@@ -148,10 +169,10 @@ const RegisterPage = () => {
               autoFocus
               fullWidth
               id='username'
-              label='Nickname'
+              label='nickName'
               sx={{ marginBottom: 4 }}
-              value={registerInfo.nickname}
-              onChange={e => handleChangeRegisterInfo('nickname', e.target.value)}
+              value={registerInfo.nickName}
+              onChange={e => handleChangeRegisterInfo('nickName', e.target.value)}
             />
             <TextField
               fullWidth

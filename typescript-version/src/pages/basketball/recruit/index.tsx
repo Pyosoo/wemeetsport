@@ -1,11 +1,6 @@
 // ** MUI Imports
 import Grid from '@mui/material/Grid'
-import Card from '@mui/material/Card'
-import Link from '@mui/material/Link'
-import Button from '@mui/material/Button'
-import Tooltip from '@mui/material/Tooltip'
-import Typography from '@mui/material/Typography'
-import CardContent from '@mui/material/CardContent'
+import useSession from 'src/hooks/useSession'
 
 /**
  ** Icons Imports:
@@ -113,6 +108,7 @@ const icons = {
 }
 
 const Recruit = () => {
+  const session = useSession()
   return (
     <Grid container spacing={6}>
       recruit

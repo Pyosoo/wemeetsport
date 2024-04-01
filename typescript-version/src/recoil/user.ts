@@ -5,9 +5,11 @@ export const sessionState = atom({
   default: {
     state: false,
     email: '',
-    nickname: '',
+    nickName: '',
     mobile: '',
-    sessionToken: '',
+    exp: '',
+    iat: '',
+    accessToken: '',
     refreshToken: ''
   }
 })
@@ -24,7 +26,7 @@ export const userState = atom({
   key: 'user',
   default: {
     email: '',
-    nickname: '',
+    nickName: '',
     profileImage: ''
   }
 })
@@ -34,7 +36,7 @@ export const registerInfoState = atom({
   default: {
     email: '',
     password: '',
-    nickname: '',
+    nickName: '',
     mobile: ''
   }
 })

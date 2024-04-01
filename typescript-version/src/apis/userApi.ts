@@ -1,11 +1,11 @@
 import axios, { AxiosResponse } from 'axios'
 
-const API_URL = 'http://172.30.1.45:8080/'
+const API_URL = 'http://3.80.99.192:8080'
 
 interface registerType {
   email: string
   password: string
-  nickname: string
+  nickName: string
   mobile: string
 }
 interface SignUpResponse {
@@ -17,7 +17,7 @@ export const loginApi = async (email: string, password: string) => {
   const res = await axios
     .post(`${API_URL}/member/login`, {
       email,
-      mpw: password
+      password
     })
     .then((response: AxiosResponse<SignUpResponse>) => response.data)
     .catch(err => {
@@ -41,10 +41,10 @@ export const refreshToken = async (accessToken: string, refreshToken: string) =>
   return res
 }
 
-export const signUpApi = (nickname: string, email: string, password: string, mobile: string) => {
+export const signUpApi = (nickName: string, email: string, password: string, mobile: string) => {
   const res = axios
     .post(`${API_URL}/member/signup`, {
-      nickname,
+      nickName,
       email,
       password,
       mobile

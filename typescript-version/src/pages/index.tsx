@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { nameState } from 'src/recoil/stats'
+import { nameState } from 'src/recoil/states'
 import { useRecoilState } from 'recoil'
 import useSession from 'src/hooks/useSession'
 

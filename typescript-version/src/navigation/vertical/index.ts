@@ -25,44 +25,41 @@ const navigation = (): VerticalNavItemsType => {
       icon: AccountCogOutline,
       path: '/account-settings'
     },
-    // {
-    //   sectionTitle: 'Pages'
-    // },
-    // {
-    //   title: 'Login',
-    //   icon: Login,
-    //   path: '/pages/login',
-    //   openInNewTab: true
-    // },
-    // {
-    //   title: 'Register',
-    //   icon: AccountPlusOutline,
-    //   path: '/pages/register',
-    //   openInNewTab: true
-    // },
-    // {
-    //   title: 'Error',
-    //   icon: AlertCircleOutline,
-    //   path: '/pages/error',
-    //   openInNewTab: true
-    // },
     {
       sectionTitle: '농구'
     },
     {
       title: '시합 초청',
       icon: FormatLetterCase,
-      path: '/invite'
+      path: '/basketball/invite'
     },
     {
       title: '팀원 모집',
-      path: '/recruit',
+      path: '/basketball/recruit',
       icon: GoogleCirclesExtended
     },
     {
       title: '대관 정보',
       icon: CreditCardOutline,
-      path: '/rental'
+      path: '/basketball/rental'
+    },
+    {
+      sectionTitle: '축구'
+    },
+    {
+      title: '시합 초청',
+      icon: FormatLetterCase,
+      path: '/soccer/invite'
+    },
+    {
+      title: '팀원 모집',
+      path: '/soccer/recruit',
+      icon: GoogleCirclesExtended
+    },
+    {
+      title: '대관 정보',
+      icon: CreditCardOutline,
+      path: '/soccer/rental'
     }
     // {
     //   title: 'Tables',

@@ -1,7 +1,8 @@
 // ** MUI Imports
-import Grid from '@mui/material/Grid'
+import useSession from 'src/hooks/useSession'
 
 const Rental = () => {
+  const session = useSession()
   return <div>rental</div>
 }
 
