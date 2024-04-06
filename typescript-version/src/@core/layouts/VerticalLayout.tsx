@@ -79,11 +79,15 @@ const VerticalLayout = (props: LayoutProps) => {
           {/* Content */}
           <ContentWrapper
             className='layout-page-content'
+            style={{
+              backgroundColor: '#fbfbfb',
+              borderRadius: '5px'
+            }}
             sx={{
               ...(contentWidth === 'boxed' && {
                 mx: 'auto',
                 '@media (min-width:1440px)': { maxWidth: 1440 },
-                '@media (min-width:1200px)': { maxWidth: '100%' }
+                '@media (min-width:1200px)': { maxWidth: '95%' }
               })
             }}
           >

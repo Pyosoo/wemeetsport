@@ -8,9 +8,9 @@ interface registerType {
   nickName: string
   mobile: string
 }
-interface SignUpResponse {
+interface ApiResponse {
   success: boolean
-  data: any // 적절한 데이터 타입으로 변경해 주세요
+  data: any
 }
 
 export const loginApi = async (email: string, password: string) => {
@@ -19,7 +19,7 @@ export const loginApi = async (email: string, password: string) => {
       email,
       password
     })
-    .then((response: AxiosResponse<SignUpResponse>) => response.data)
+    .then((response: AxiosResponse<ApiResponse>) => response.data)
     .catch(err => {
       console.log(err)
     })
@@ -33,7 +33,7 @@ export const refreshToken = async (accessToken: string, refreshToken: string) =>
       accessToken,
       refreshToken
     })
-    .then((response: AxiosResponse<SignUpResponse>) => response.data)
+    .then((response: AxiosResponse<ApiResponse>) => response.data)
     .catch(err => {
       console.log(err)
     })
@@ -49,7 +49,7 @@ export const signUpApi = (nickName: string, email: string, password: string, mob
       password,
       mobile
     })
-    .then((response: AxiosResponse<SignUpResponse>) => response.data)
+    .then((response: AxiosResponse<ApiResponse>) => response.data)
     .catch(err => {
       console.log(err)
     })
