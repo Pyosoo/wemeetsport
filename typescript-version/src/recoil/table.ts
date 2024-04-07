@@ -16,7 +16,7 @@ export const makeBoardState = atom({
     title: '',
     content: '',
     category: '',
-    type: ''
+    type: 'invite'
   }
 })
 

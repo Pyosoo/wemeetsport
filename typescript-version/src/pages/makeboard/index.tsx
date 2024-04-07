@@ -1,5 +1,5 @@
 import { Box } from '@mui/material'
-import React from 'react'
+import React, { useEffect } from 'react'
 import Select, { SelectChangeEvent } from '@mui/material/Select'
 import MenuItem from '@mui/material/MenuItem'
 import { useRecoilState } from 'recoil'
@@ -9,9 +9,54 @@ import FormControl from '@mui/material/FormControl'
 import Button from '@mui/material/Button'
 import TextField from '@mui/material/TextField'
 import router from 'next/router'
+import { makeBoardApi } from 'src/apis/tableApi'
+import { snackbarState } from 'src/recoil/states'
 
 export default function Makeboard() {
   const [makeBoard, setMakeBoardState] = useRecoilState(makeBoardState)
+  const [snackbar, setSnackbarState] = useRecoilState(snackbarState)
+
+  const optionVal = {
+    invite: '시합 초청',
+    recruit: '팀원 모집',
+    rental: '대관 정보'
+  }
+
+  useEffect(() => {
+    return () => {
+      setMakeBoardState(prev => ({
+        ...prev,
+        title: '',
+        content: '',
+        category: '',
+        type: 'invite'
+      }))
+    }
+  }, [])
+
+  const makeBoardFunc = async () => {
+    const res = await makeBoardApi({
+      category: makeBoard.category,
+      type: makeBoard.type,
+      title: makeBoard.title,
+      content: makeBoard.content
+    })
+
+    if (res && res.success) {
+      setSnackbarState(prev => ({
+        ...prev,
+        open: true,
+        message: '글작성을 완료했습니다.'
+      }))
+      router.push('/basketball/invite')
+    } else {
+      setSnackbarState(prev => ({
+        ...prev,
+        open: true,
+        message: res.data
+      }))
+    }
+  }
 
   return (
     <div>
@@ -41,7 +86,7 @@ export default function Makeboard() {
             <Select
               labelId='demo-simple-select-label2'
               sx={{ width: '100%', height: 55, marginTop: '3.5px' }}
-              value={makeBoard.category}
+              value={makeBoard.type}
               label='게시판'
               onChange={(e: SelectChangeEvent<string>) => {
                 setMakeBoardState(prev => ({
@@ -58,7 +103,7 @@ export default function Makeboard() {
           <Button
             sx={{ margin: '0 5px 0 auto', height: 55, marginTop: '3.5px' }}
             variant='contained'
-            onClick={() => {}}
+            onClick={() => makeBoardFunc()}
           >
             작성
           </Button>

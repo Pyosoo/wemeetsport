@@ -12,7 +12,7 @@ interface getBoardType {
 }
 interface ApiResponse {
   success: boolean
-  data: any
+  data: string
 }
 
 export const getBoardApi = async (props: getBoardType) => {
@@ -25,5 +25,24 @@ export const getBoardApi = async (props: getBoardType) => {
       console.log(err)
     })
 
+  return res
+}
+
+interface makeBoardType {
+  category: string
+  type: string
+  title: string
+  content: string
+}
+
+export const makeBoardApi = async (props: makeBoardType) => {
+  const res = await axios
+    .post(`${API_URL}/board/api/register`, {
+      ...props
+    })
+    .then((response: AxiosResponse<ApiResponse>) => response.data)
+    .catch(err => {
+      console.log(err)
+    })
   return res
 }

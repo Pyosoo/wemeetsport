@@ -1,4 +1,5 @@
 import axios, { AxiosResponse } from 'axios'
+import Cookies from 'js-cookie'
 
 const API_URL = 'http://3.80.99.192:8080'
 
@@ -19,7 +20,12 @@ export const loginApi = async (email: string, password: string) => {
       email,
       password
     })
-    .then((response: AxiosResponse<ApiResponse>) => response.data)
+    .then((response: AxiosResponse<ApiResponse>) => {
+      console.log(response)
+      // Cookies.set('accessToken', response.data.accessToken)
+      // Cookies.set()
+      return response.data
+    })
     .catch(err => {
       console.log(err)
     })
