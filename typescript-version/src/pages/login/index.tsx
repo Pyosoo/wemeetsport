@@ -1,88 +1,85 @@
 // ** React Imports
-import { ChangeEvent, MouseEvent, ReactNode, useEffect, useState } from 'react'
+import { ChangeEvent, MouseEvent, ReactNode, useEffect, useState } from 'react';
 
 // ** Next Imports
-import Link from 'next/link'
-import { useRouter } from 'next/router'
+import Link from 'next/link';
+import { useRouter } from 'next/router';
 
 // ** MUI Components
-import Box from '@mui/material/Box'
-import Button from '@mui/material/Button'
-import TextField from '@mui/material/TextField'
-import InputLabel from '@mui/material/InputLabel'
-import Typography from '@mui/material/Typography'
-import IconButton from '@mui/material/IconButton'
-import CardContent from '@mui/material/CardContent'
-import FormControl from '@mui/material/FormControl'
-import OutlinedInput from '@mui/material/OutlinedInput'
-import { styled, useTheme } from '@mui/material/styles'
-import MuiCard, { CardProps } from '@mui/material/Card'
-import InputAdornment from '@mui/material/InputAdornment'
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import TextField from '@mui/material/TextField';
+import InputLabel from '@mui/material/InputLabel';
+import Typography from '@mui/material/Typography';
+import IconButton from '@mui/material/IconButton';
+import CardContent from '@mui/material/CardContent';
+import FormControl from '@mui/material/FormControl';
+import OutlinedInput from '@mui/material/OutlinedInput';
+import { styled, useTheme } from '@mui/material/styles';
+import MuiCard, { CardProps } from '@mui/material/Card';
+import InputAdornment from '@mui/material/InputAdornment';
 
 // ** Icons Imports
-import EyeOutline from 'mdi-material-ui/EyeOutline'
-import EyeOffOutline from 'mdi-material-ui/EyeOffOutline'
+import EyeOutline from 'mdi-material-ui/EyeOutline';
+import EyeOffOutline from 'mdi-material-ui/EyeOffOutline';
 
 // ** Layout Import
-import BlankLayout from 'src/@core/layouts/BlankLayout'
+import BlankLayout from 'src/@core/layouts/BlankLayout';
 
 // ** Demo Imports
-import FooterIllustrationsV1 from 'src/views/pages/auth/FooterIllustration'
-import { useRecoilState } from 'recoil'
-import { sessionState, loginState } from 'src/recoil/user'
-import { useRecoilLogger } from 'src/hooks/useRecoilLogger'
-import { loginApi } from 'src/apis/userApi'
-import { jwtDecode } from 'jwt-decode'
+import FooterIllustrationsV1 from 'src/views/pages/auth/FooterIllustration';
+import { useRecoilState } from 'recoil';
+import { sessionState, loginState } from 'src/recoil/user';
+import { useRecoilLogger } from 'src/hooks/useRecoilLogger';
+import { loginApi } from 'src/apis/userApi';
+import { jwtDecode } from 'jwt-decode';
 
 // ** Styled Components
 const Card = styled(MuiCard)<CardProps>(({ theme }) => ({
   [theme.breakpoints.up('sm')]: { width: '28rem' }
-}))
+}));
 
 const LinkStyled = styled('a')(({ theme }) => ({
   fontSize: '0.875rem',
   textDecoration: 'none',
   color: theme.palette.primary.main
-}))
+}));
 
 const LoginPage = () => {
   // ** State
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [passwordHide, setPasswordHide] = useState(true)
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [passwordHide, setPasswordHide] = useState(true);
 
-  const [session, setSessionState] = useRecoilState(sessionState)
-  const [loginInfo, setLoginState] = useRecoilState(loginState)
+  const [session, setSessionState] = useRecoilState(sessionState);
+  const [loginInfo, setLoginState] = useRecoilState(loginState);
 
   // ** Hook
-  const router = useRouter()
+  const router = useRouter();
 
-  useRecoilLogger()
+  useRecoilLogger();
 
   const handleMouseDownPassword = (event: MouseEvent<HTMLButtonElement>) => {
-    event.preventDefault()
-  }
+    event.preventDefault();
+  };
 
   interface sessionInterface {
-    state: boolean
-    email: string
-    nickName: string
-    mobile: string
-    exp: string
-    iat: string
-    accessToken: string
-    refreshToken: string
+    state: boolean;
+    email: string;
+    nickName: string;
+    mobile: string;
+    exp: string;
+    iat: string;
+    accessToken: string;
+    refreshToken: string;
   }
 
   const handleLogIn = async () => {
-    const res = await loginApi(loginInfo.email, loginInfo.password)
-    if (
-      res
-      // && res.success
-    ) {
-      console.log(res)
-      const resData: sessionInterface = jwtDecode(res.accessToken)
-      console.log(resData)
+    const res = await loginApi(loginInfo.email, loginInfo.password);
+    if (res && res.success) {
+      console.log(res);
+      const resData: sessionInterface = jwtDecode(res.data.accessToken);
+      console.log(resData);
       setSessionState(prev => ({
         ...prev,
         state: true,
@@ -91,14 +88,14 @@ const LoginPage = () => {
         mobile: resData.mobile,
         exp: resData.exp,
         iat: resData.iat,
-        accessToken: res.accessToken,
-        refreshToken: res.refreshToken
-      }))
-      router.push('/')
+        accessToken: res.data.accessToken,
+        refreshToken: res.data.refreshToken
+      }));
+      router.push('/');
     } else {
-      console.log(res)
+      console.log(res);
     }
-  }
+  };
 
   return (
     <Box className='content-center'>
@@ -181,9 +178,9 @@ const LoginPage = () => {
       </Card>
       <FooterIllustrationsV1 />
     </Box>
-  )
-}
+  );
+};
 
-LoginPage.getLayout = (page: ReactNode) => <BlankLayout>{page}</BlankLayout>
+LoginPage.getLayout = (page: ReactNode) => <BlankLayout>{page}</BlankLayout>;
 
-export default LoginPage
+export default LoginPage;

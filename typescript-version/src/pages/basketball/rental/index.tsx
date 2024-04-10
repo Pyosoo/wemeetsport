@@ -1,9 +1,10 @@
 // ** MUI Imports
-import useSession from 'src/hooks/useSession'
+import useSession from 'src/hooks/useSession';
 
 const Rental = () => {
-  const session = useSession()
-  return <div>rental</div>
-}
+  useSession();
 
-export default Rental
+  return <div>rental</div>;
+};
+
+export default Rental;

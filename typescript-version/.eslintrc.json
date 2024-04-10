@@ -6,8 +6,8 @@
   ],
   "rules": {
     "semi": [
-      "always",
-      "error"
+      "error",
+      "always"
     ],
     "react/display-name": "off",
     "@next/next/no-img-element": "off",
