@@ -19,7 +19,6 @@ const useSession = () => {
   const rt = Cookies.get('WMS_refreshToken');
 
   useEffect(() => {
-    console.log(at);
     if (!at || !rt) {
       router.push('/login');
     }
@@ -34,7 +33,6 @@ const useSession = () => {
           Cookies.set('WMS_accessToken', res.data.accessToken);
           Cookies.set('WMS_refreshToken', res.data.refreshToken);
         } else {
-          console.log(res);
           Cookies.remove('WMS_accessToken');
           Cookies.remove('WMS_refreshToken');
           router.push('/login');

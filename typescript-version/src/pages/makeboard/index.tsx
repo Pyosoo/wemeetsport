@@ -1,26 +1,30 @@
-import { Box } from '@mui/material'
-import React, { useEffect } from 'react'
-import Select, { SelectChangeEvent } from '@mui/material/Select'
-import MenuItem from '@mui/material/MenuItem'
-import { useRecoilState } from 'recoil'
-import { makeBoardState } from 'src/recoil/table'
-import InputLabel from '@mui/material/InputLabel'
-import FormControl from '@mui/material/FormControl'
-import Button from '@mui/material/Button'
-import TextField from '@mui/material/TextField'
-import router from 'next/router'
-import { makeBoardApi } from 'src/apis/tableApi'
-import { snackbarState } from 'src/recoil/states'
+import { Box } from '@mui/material';
+import React, { useEffect } from 'react';
+import Select, { SelectChangeEvent } from '@mui/material/Select';
+import MenuItem from '@mui/material/MenuItem';
+import { useRecoilState } from 'recoil';
+import { makeBoardState } from 'src/recoil/table';
+import InputLabel from '@mui/material/InputLabel';
+import FormControl from '@mui/material/FormControl';
+import Button from '@mui/material/Button';
+import TextField from '@mui/material/TextField';
+import router from 'next/router';
+import { makeBoardApi } from 'src/apis/tableApi';
+import { snackbarState } from 'src/recoil/states';
+import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 
 export default function Makeboard() {
-  const [makeBoard, setMakeBoardState] = useRecoilState(makeBoardState)
-  const [snackbar, setSnackbarState] = useRecoilState(snackbarState)
+  const [makeBoard, setMakeBoardState] = useRecoilState(makeBoardState);
+  const [snackbar, setSnackbarState] = useRecoilState(snackbarState);
 
   const optionVal = {
     invite: '시합 초청',
     recruit: '팀원 모집',
     rental: '대관 정보'
-  }
+  };
 
   useEffect(() => {
     return () => {
@@ -29,34 +33,65 @@ export default function Makeboard() {
         title: '',
         content: '',
         category: '',
-        type: 'invite'
-      }))
-    }
-  }, [])
+        type: ''
+      }));
+    };
+  }, []);
 
   const makeBoardFunc = async () => {
+    // const params = {
+    //   category: makeBoard.category,
+    //   type: makeBoard.type,
+    //   title: makeBoard.title,
+    //   content: makeBoard.content,
+    //   date: makeBoard.date
+    // };
+    // console.log(params);
+    // return;
+
+    if (!makeBoard.category) {
+      setSnackbarState(prev => ({
+        ...prev,
+        open: true,
+        message: '종목을 선택해주세요.',
+        type: 'error'
+      }));
+      return;
+    }
+    if (!makeBoard.type) {
+      setSnackbarState(prev => ({
+        ...prev,
+        open: true,
+        message: '게시판을 선택해주세요.',
+        type: 'error'
+      }));
+      return;
+    }
+
     const res = await makeBoardApi({
       category: makeBoard.category,
       type: makeBoard.type,
       title: makeBoard.title,
       content: makeBoard.content
-    })
+    });
 
     if (res && res.success) {
       setSnackbarState(prev => ({
         ...prev,
         open: true,
-        message: '글작성을 완료했습니다.'
-      }))
-      router.push('/basketball/invite')
+        message: '글작성을 완료했습니다.',
+        type: 'success'
+      }));
+      router.push('/basketball/invite');
     } else {
       setSnackbarState(prev => ({
         ...prev,
         open: true,
-        message: res.data
-      }))
+        message: '게시글 작성에 실패했습니다.',
+        type: 'error'
+      }));
     }
-  }
+  };
 
   return (
     <div>
@@ -73,7 +108,7 @@ export default function Makeboard() {
                 setMakeBoardState(prev => ({
                   ...prev,
                   category: e.target.value
-                }))
+                }));
               }}
             >
               <MenuItem value={'basketball'}>농구</MenuItem>
@@ -92,7 +127,7 @@ export default function Makeboard() {
                 setMakeBoardState(prev => ({
                   ...prev,
                   type: e.target.value
-                }))
+                }));
               }}
             >
               <MenuItem value={'invite'}>시합 초청</MenuItem>
@@ -100,8 +135,9 @@ export default function Makeboard() {
               <MenuItem value={'rental'}>대관 정보</MenuItem>
             </Select>
           </FormControl>
+
           <Button
-            sx={{ margin: '0 5px 0 auto', height: 55, marginTop: '3.5px' }}
+            sx={{ margin: '0 5px 0 10px', height: 55, marginTop: '3.5px' }}
             variant='contained'
             onClick={() => makeBoardFunc()}
           >
@@ -112,6 +148,22 @@ export default function Makeboard() {
         <div className='divider' />
 
         <Box>
+          <Box sx={{ marginBottom: '10px', marginTop: '10px' }}>
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+              <DemoContainer components={['DatePicker']}>
+                <DatePicker
+                  selected={makeBoard.date}
+                  onChange={(date: Date) => {
+                    setMakeBoardState(prev => ({
+                      ...prev,
+                      date
+                    }));
+                  }}
+                  label='날짜 선택'
+                />
+              </DemoContainer>
+            </LocalizationProvider>
+          </Box>
           <TextField
             sx={{ width: '50%' }}
             id='outlined-basic'
@@ -122,7 +174,7 @@ export default function Makeboard() {
               setMakeBoardState(prev => ({
                 ...prev,
                 title: event.target.value
-              }))
+              }));
             }}
           />
         </Box>
@@ -138,5 +190,5 @@ export default function Makeboard() {
         </Box>
       </Box>
     </div>
-  )
+  );
 }

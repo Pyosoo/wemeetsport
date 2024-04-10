@@ -31,3 +31,20 @@ code[class*='language-'] {
   margin-top: 10px;
   margin-bottom: 10px;
 }
+
+.snackbar_success div {
+  background-color: rgb(73, 233, 73) !important;
+}
+
+.snackbar_error div {
+  background-color: rgb(223, 69, 69) !important;
+}
+
+.customDatePicker {
+  width: 150px;
+  height: 52px;
+  margin-top: 5px;
+  padding: 8px 15px;
+  border-radius: 3px;
+  border: 1px solid black;
+}

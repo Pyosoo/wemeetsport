@@ -1,64 +1,64 @@
 // ** React Imports
-import { useState, Fragment, ChangeEvent, MouseEvent, ReactNode, useEffect } from 'react'
+import { useState, Fragment, ChangeEvent, MouseEvent, ReactNode, useEffect } from 'react';
 
 // ** Next Imports
-import Link from 'next/link'
+import Link from 'next/link';
 
 // ** MUI Components
-import Box from '@mui/material/Box'
-import Button from '@mui/material/Button'
-import Divider from '@mui/material/Divider'
-import Checkbox from '@mui/material/Checkbox'
-import TextField from '@mui/material/TextField'
-import Typography from '@mui/material/Typography'
-import InputLabel from '@mui/material/InputLabel'
-import IconButton from '@mui/material/IconButton'
-import CardContent from '@mui/material/CardContent'
-import FormControl from '@mui/material/FormControl'
-import OutlinedInput from '@mui/material/OutlinedInput'
-import { styled, useTheme } from '@mui/material/styles'
-import MuiCard, { CardProps } from '@mui/material/Card'
-import InputAdornment from '@mui/material/InputAdornment'
-import MuiFormControlLabel, { FormControlLabelProps } from '@mui/material/FormControlLabel'
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import Divider from '@mui/material/Divider';
+import Checkbox from '@mui/material/Checkbox';
+import TextField from '@mui/material/TextField';
+import Typography from '@mui/material/Typography';
+import InputLabel from '@mui/material/InputLabel';
+import IconButton from '@mui/material/IconButton';
+import CardContent from '@mui/material/CardContent';
+import FormControl from '@mui/material/FormControl';
+import OutlinedInput from '@mui/material/OutlinedInput';
+import { styled, useTheme } from '@mui/material/styles';
+import MuiCard, { CardProps } from '@mui/material/Card';
+import InputAdornment from '@mui/material/InputAdornment';
+import MuiFormControlLabel, { FormControlLabelProps } from '@mui/material/FormControlLabel';
 
 // ** Icons Imports
-import Google from 'mdi-material-ui/Google'
-import Github from 'mdi-material-ui/Github'
-import Twitter from 'mdi-material-ui/Twitter'
-import Facebook from 'mdi-material-ui/Facebook'
-import EyeOutline from 'mdi-material-ui/EyeOutline'
-import EyeOffOutline from 'mdi-material-ui/EyeOffOutline'
+import Google from 'mdi-material-ui/Google';
+import Github from 'mdi-material-ui/Github';
+import Twitter from 'mdi-material-ui/Twitter';
+import Facebook from 'mdi-material-ui/Facebook';
+import EyeOutline from 'mdi-material-ui/EyeOutline';
+import EyeOffOutline from 'mdi-material-ui/EyeOffOutline';
 
 // ** Configs
-import themeConfig from 'src/configs/themeConfig'
+import themeConfig from 'src/configs/themeConfig';
 
 // ** Layout Import
-import BlankLayout from 'src/@core/layouts/BlankLayout'
+import BlankLayout from 'src/@core/layouts/BlankLayout';
 
 // ** Demo Imports
-import FooterIllustrationsV1 from 'src/views/pages/auth/FooterIllustration'
-import { useRecoilState } from 'recoil'
-import { registerInfoState } from 'src/recoil/user'
-import { useRecoilLogger } from 'src/hooks/useRecoilLogger'
-import { signUpApi } from 'src/apis/userApi'
-import { snackbarState } from 'src/recoil/states'
-import router from 'next/router'
+import FooterIllustrationsV1 from 'src/views/pages/auth/FooterIllustration';
+import { useRecoilState } from 'recoil';
+import { registerInfoState } from 'src/recoil/user';
+import { useRecoilLogger } from 'src/hooks/useRecoilLogger';
+import { signUpApi } from 'src/apis/userApi';
+import { snackbarState } from 'src/recoil/states';
+import router from 'next/router';
 
 interface State {
-  password: string
-  showPassword: boolean
+  password: string;
+  showPassword: boolean;
 }
 
 // ** Styled Components
 const Card = styled(MuiCard)<CardProps>(({ theme }) => ({
   [theme.breakpoints.up('sm')]: { width: '28rem' }
-}))
+}));
 
 const LinkStyled = styled('a')(({ theme }) => ({
   fontSize: '0.875rem',
   textDecoration: 'none',
   color: theme.palette.primary.main
-}))
+}));
 
 const FormControlLabel = styled(MuiFormControlLabel)<FormControlLabelProps>(({ theme }) => ({
   marginTop: theme.spacing(1.5),
@@ -67,67 +67,69 @@ const FormControlLabel = styled(MuiFormControlLabel)<FormControlLabelProps>(({ t
     fontSize: '0.875rem',
     color: theme.palette.text.secondary
   }
-}))
+}));
 
 const RegisterPage = () => {
   // ** States
   const [values, setValues] = useState<State>({
     password: '',
     showPassword: false
-  })
-  const [registerInfo, setRegisterInfoState] = useRecoilState(registerInfoState)
-  const [snackbar, setSnackbarState] = useRecoilState(snackbarState)
+  });
+  const [registerInfo, setRegisterInfoState] = useRecoilState(registerInfoState);
+  const [snackbar, setSnackbarState] = useRecoilState(snackbarState);
 
   // ** Hook
-  const theme = useTheme()
+  const theme = useTheme();
 
   const handleChange = (prop: keyof State) => (event: ChangeEvent<HTMLInputElement>) => {
-    setValues({ ...values, [prop]: event.target.value })
-  }
+    setValues({ ...values, [prop]: event.target.value });
+  };
   const handleClickShowPassword = () => {
-    setValues({ ...values, showPassword: !values.showPassword })
-  }
+    setValues({ ...values, showPassword: !values.showPassword });
+  };
   const handleMouseDownPassword = (event: MouseEvent<HTMLButtonElement>) => {
-    event.preventDefault()
-  }
+    event.preventDefault();
+  };
 
   const handleChangeRegisterInfo = (key: string, val: string) => {
     setRegisterInfoState(prev => ({
       ...prev,
       [key]: val
-    }))
-  }
+    }));
+  };
 
   const signUp = async () => {
-    const phoneNumberRegex = /^01(?:0|1|[6-9])(?:\d{3}|\d{4})\d{4}$/
-    console.log(phoneNumberRegex.test(registerInfo.mobile))
+    const phoneNumberRegex = /^01(?:0|1|[6-9])(?:\d{3}|\d{4})\d{4}$/;
+    console.log(phoneNumberRegex.test(registerInfo.mobile));
     if (!phoneNumberRegex.test(registerInfo.mobile)) {
       setSnackbarState(prev => ({
         ...prev,
         open: true,
-        message: '모바일 정보를 확인해주세요.'
-      }))
-      return
+        message: '모바일 정보를 확인해주세요.',
+        type: 'error'
+      }));
+      return;
     }
 
-    const res = await signUpApi(registerInfo.nickName, registerInfo.email, registerInfo.password, registerInfo.mobile)
+    const res = await signUpApi({
+      email: registerInfo.email,
+      password: registerInfo.password,
+      nickName: registerInfo.nickName,
+      mobile: registerInfo.mobile
+    });
     if (res && res.success) {
       setSnackbarState(prev => ({
         ...prev,
         open: true,
-        message: '회원가입에 성공하였습니다. 로그인해주세요.'
-      }))
-      router.push('/login')
+        message: '회원가입에 성공하였습니다. 로그인해주세요.',
+        type: 'success'
+      }));
+      router.push('/login');
     } else {
-      // setSnackbarState(prev => ({
-      //   ...prev,
-      //   open: true,
-      //   message: res
-      // }))
-      console.log(res)
+      console.log(res);
     }
-  }
-  useRecoilLogger()
+  };
+  useRecoilLogger();
 
   useEffect(() => {
     return () => {
@@ -136,9 +138,9 @@ const RegisterPage = () => {
         password: '',
         nickName: '',
         mobile: ''
-      }))
-    }
-  }, [])
+      }));
+    };
+  }, []);
 
   return (
     <Box className='content-center'>
@@ -250,9 +252,9 @@ const RegisterPage = () => {
       </Card>
       <FooterIllustrationsV1 />
     </Box>
-  )
-}
+  );
+};
 
-RegisterPage.getLayout = (page: ReactNode) => <BlankLayout>{page}</BlankLayout>
+RegisterPage.getLayout = (page: ReactNode) => <BlankLayout>{page}</BlankLayout>;
 
-export default RegisterPage
+export default RegisterPage;

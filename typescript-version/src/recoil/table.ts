@@ -1,4 +1,4 @@
-import { atom } from 'recoil'
+import { atom } from 'recoil';
 
 export const pageDataState = atom({
   key: 'pageData',
@@ -8,7 +8,7 @@ export const pageDataState = atom({
     search: '',
     searchOption: 'title' // title, content, writer(nickname)
   }
-})
+});
 
 export const makeBoardState = atom({
   key: 'makeBoard',
@@ -16,11 +16,12 @@ export const makeBoardState = atom({
     title: '',
     content: '',
     category: '',
-    type: 'invite'
+    type: '',
+    date: new Date()
   }
-})
+});
 
 export const tableDataState = atom({
   key: 'tableData',
   default: []
-})
+});

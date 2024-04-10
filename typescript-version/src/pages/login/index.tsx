@@ -131,6 +131,9 @@ const LoginPage = () => {
                 id='auth-login-password'
                 label='Password'
                 value={loginInfo.password}
+                onKeyDown={event => {
+                  if (event.key === 'Enter') handleLogIn();
+                }}
                 onChange={(event: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) =>
                   setLoginState(prev => ({
                     ...prev,
