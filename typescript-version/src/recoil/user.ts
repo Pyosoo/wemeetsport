@@ -1,4 +1,12 @@
-import { atom } from 'recoil'
+import { atom } from 'recoil';
+import { recoilPersist } from 'recoil-persist';
+
+const localStorage = typeof window !== 'undefined' ? window.localStorage : undefined;
+
+const { persistAtom } = recoilPersist({
+  key: 'recoil-states',
+  storage: localStorage
+});
 
 export const sessionState = atom({
   key: 'session',
@@ -11,16 +19,18 @@ export const sessionState = atom({
     iat: '',
     accessToken: '',
     refreshToken: ''
-  }
-})
+  },
+  effects_UNSTABLE: [persistAtom]
+});
 
 export const loginState = atom({
   key: 'loginInfo',
   default: {
     email: '',
     password: ''
-  }
-})
+  },
+  effects_UNSTABLE: [persistAtom]
+});
 
 export const userState = atom({
   key: 'user',
@@ -28,8 +38,9 @@ export const userState = atom({
     email: '',
     nickName: '',
     profileImage: ''
-  }
-})
+  },
+  effects_UNSTABLE: [persistAtom]
+});
 
 export const registerInfoState = atom({
   key: 'registerInfo',
@@ -38,5 +49,6 @@ export const registerInfoState = atom({
     password: '',
     nickName: '',
     mobile: ''
-  }
-})
+  },
+  effects_UNSTABLE: [persistAtom]
+});

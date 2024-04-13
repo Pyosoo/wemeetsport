@@ -15,6 +15,8 @@ import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import moment from 'moment';
+import dayjs from 'dayjs';
 
 export default function Makeboard() {
   const [makeBoard, setMakeBoardState] = useRecoilState(makeBoardState);
@@ -72,7 +74,8 @@ export default function Makeboard() {
       category: makeBoard.category,
       type: makeBoard.type,
       title: makeBoard.title,
-      content: makeBoard.content
+      content: makeBoard.content,
+      date: makeBoard.date
     });
 
     if (res && res.success) {
@@ -139,7 +142,7 @@ export default function Makeboard() {
           <Button
             sx={{ margin: '0 5px 0 10px', height: 55, marginTop: '3.5px' }}
             variant='contained'
-            onClick={() => makeBoardFunc()}
+            onClick={makeBoardFunc}
           >
             작성
           </Button>
@@ -152,11 +155,11 @@ export default function Makeboard() {
             <LocalizationProvider dateAdapter={AdapterDayjs}>
               <DemoContainer components={['DatePicker']}>
                 <DatePicker
-                  selected={makeBoard.date}
                   onChange={(date: Date) => {
+                    console.log(date);
                     setMakeBoardState(prev => ({
                       ...prev,
-                      date
+                      date: moment(dayjs(date).toDate()).format('YYYY-MM-DD')
                     }));
                   }}
                   label='날짜 선택'
@@ -180,11 +183,17 @@ export default function Makeboard() {
         </Box>
         <Box>
           <TextField
+            onChange={(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+              setMakeBoardState(prev => ({
+                ...prev,
+                content: e.target.value
+              }));
+            }}
+            value={makeBoard.content}
             sx={{ width: '50%', minHeight: 500, marginTop: '10px' }}
             id='outlined-multiline-flexible'
             label='글내용'
             multiline
-            rows={10}
             maxRows={100}
           />
         </Box>

@@ -77,9 +77,7 @@ const LoginPage = () => {
   const handleLogIn = async () => {
     const res = await loginApi(loginInfo.email, loginInfo.password);
     if (res && res.success) {
-      console.log(res);
       const resData: sessionInterface = jwtDecode(res.data.accessToken);
-      console.log(resData);
       setSessionState(prev => ({
         ...prev,
         state: true,

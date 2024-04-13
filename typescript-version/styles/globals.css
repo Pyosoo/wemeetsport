@@ -1,5 +1,6 @@
 html,
 body {
+  font-family: 'Noto Serif KR', serif !important;
   min-height: 100%;
 }
 

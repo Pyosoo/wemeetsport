@@ -1,5 +1,6 @@
 import axios, { AxiosResponse } from 'axios';
 import Cookies from 'js-cookie';
+import moment from 'moment';
 
 const API_URL = 'http://3.80.99.192:8080';
 
@@ -34,6 +35,7 @@ interface makeBoardType {
   type: string;
   title: string;
   content: string;
+  date: string;
 }
 
 export const makeBoardApi = async (props: makeBoardType) => {
@@ -49,6 +51,17 @@ export const makeBoardApi = async (props: makeBoardType) => {
         }
       }
     )
+    .then((response: AxiosResponse<ApiResponse>) => response.data)
+    .catch(err => {
+      console.log(err);
+    });
+
+  return res;
+};
+
+export const getBoardItemApi = async (boardNo: string) => {
+  const res = await axios
+    .get(`${API_URL}/board/${boardNo}`)
     .then((response: AxiosResponse<ApiResponse>) => response.data)
     .catch(err => {
       console.log(err);

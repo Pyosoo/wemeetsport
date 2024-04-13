@@ -126,7 +126,12 @@ const RegisterPage = () => {
       }));
       router.push('/login');
     } else {
-      console.log(res);
+      setSnackbarState(prev => ({
+        ...prev,
+        open: true,
+        message: '로그인에 실패했습니다.',
+        type: 'error'
+      }));
     }
   };
   useRecoilLogger();

@@ -16,7 +16,7 @@ export default function CustomSnackbar() {
     }));
   };
 
-  return snackbar.type === 'susccess' ? (
+  return snackbar.type === 'success' ? (
     <Box sx={{ width: 500 }}>
       <Snackbar
         className='snackbar_success'

@@ -1,6 +1,6 @@
 // ** MUI Imports
 import Grid from '@mui/material/Grid';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useRecoilState } from 'recoil';
 import { getBoardApi } from 'src/apis/tableApi';
 import CustomSearchBar from 'src/components/customSearchBar';
@@ -8,8 +8,22 @@ import CustomTable from 'src/components/customTable';
 import useSession from 'src/hooks/useSession';
 import { pageDataState } from 'src/recoil/table';
 
+interface tableRow {
+  boardNo: number;
+  category: string;
+  content: string;
+  createdAt: string;
+  email: string;
+  matchDate: string;
+  nickName: string;
+  status: string;
+  title: string;
+  type: string;
+}
+
 const Invite = () => {
   const [pageData, setPageData] = useRecoilState(pageDataState);
+  const [tableData, setTableData] = useState<tableRow[]>([]);
 
   useSession();
 
@@ -23,6 +37,9 @@ const Invite = () => {
         search: pageData.search,
         searchOption: pageData.searchOption
       });
+      if (res && res.success) {
+        setTableData(res.data.dtoList);
+      }
     };
 
     getBoard();
@@ -34,7 +51,8 @@ const Invite = () => {
         <div>
           <CustomSearchBar category='basketball' type='invite' />
         </div>
-        <CustomTable />
+        {tableData.length > 0 ? <CustomTable tableData={tableData} /> : null}
+        {/* <CustomTable tableData={tableData} /> */}
       </Grid>
     </Grid>
   );
