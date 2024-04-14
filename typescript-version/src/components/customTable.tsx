@@ -9,6 +9,7 @@ import Paper from '@mui/material/Paper';
 import { getBoardItemApi } from 'src/apis/tableApi';
 import { useRecoilState } from 'recoil';
 import { selectedBoardItem } from 'src/recoil/table';
+import router from 'next/router';
 
 const rows = [
   {
@@ -32,19 +33,21 @@ interface tableRow {
   type: string;
 }
 
-export default function CustomTable(props: tableRow[]) {
-  const [BoardItem, setSelectedBoardItem] = useRecoilState(selectedBoardItem);
-  const tableData = props.tableData;
-  console.log(tableData);
+interface propTypes {
+  data: tableRow[];
+}
 
-  const getBoardItem = async (boardNo: string) => {
-    const res = await getBoardItemApi(boardNo);
+export default function CustomTable(props: propTypes) {
+  const [BoardItem, setSelectedBoardItem] = useRecoilState(selectedBoardItem);
+  console.log(props);
+  const getBoardItem = async (boardNo: number) => {
+    const res = await getBoardItemApi(boardNo + '');
     if (res && res.success) {
-      console.log(res);
       setSelectedBoardItem(prev => ({
         ...prev,
         ...res.data
       }));
+      router.push(`/boardItem/${boardNo}`);
     }
   };
 
@@ -60,16 +63,23 @@ export default function CustomTable(props: tableRow[]) {
           </TableRow>
         </TableHead>
         <TableBody>
-          {tableData.map(row => (
-            <TableRow key={row.boardNo} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-              <TableCell onClick={() => getBoardItem(row.boardNo)} component='th' scope='row'>
-                {row.title}
-              </TableCell>
-              <TableCell align='right'>{row.nickName}</TableCell>
-              <TableCell align='right'>{row.createdAt}</TableCell>
-              <TableCell align='right'>{row.status}</TableCell>
-            </TableRow>
-          ))}
+          {props.tableData && props.tableData.length > 0
+            ? props.tableData.map((row: tableRow) => (
+                <TableRow
+                  onClick={() => getBoardItem(row.boardNo)}
+                  className='hover'
+                  key={row.boardNo}
+                  sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                >
+                  <TableCell component='th' scope='row'>
+                    {row.title}
+                  </TableCell>
+                  <TableCell align='right'>{row.nickName}</TableCell>
+                  <TableCell align='right'>{row.createdAt}</TableCell>
+                  <TableCell align='right'>{row.status}</TableCell>
+                </TableRow>
+              ))
+            : null}
         </TableBody>
       </Table>
     </TableContainer>

@@ -49,3 +49,9 @@ code[class*='language-'] {
   border-radius: 3px;
   border: 1px solid black;
 }
+
+.hover:hover{
+  cursor: pointer;
+  background-color: rgb(219, 219, 219);
+  border-radius: 3px;
+}

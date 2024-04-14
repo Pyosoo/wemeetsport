@@ -3,6 +3,19 @@ import { recoilPersist } from 'recoil-persist';
 
 const localStorage = typeof window !== 'undefined' ? window.localStorage : undefined;
 
+interface tableRow {
+  boardNo: number;
+  category: string;
+  content: string;
+  createdAt: string;
+  email: string;
+  matchDate: string;
+  nickName: string;
+  status: string;
+  title: string;
+  type: string;
+}
+
 const { persistAtom } = recoilPersist({
   key: 'recoil-states',
   storage: localStorage
@@ -38,7 +51,9 @@ export const makeBoardState = atom({
 
 export const tableDataState = atom({
   key: 'tableData',
-  default: [],
+  default: {
+    datas: [] as tableRow[]
+  },
   effects_UNSTABLE: [persistAtom]
 });
 

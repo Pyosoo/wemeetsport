@@ -3,6 +3,7 @@
     "baseUrl": ".",
     "rootDir": "src",
     "target": "es6",
+    "noImplicitAny": false,
     "lib": [
       "dom",
       "dom.iterable",

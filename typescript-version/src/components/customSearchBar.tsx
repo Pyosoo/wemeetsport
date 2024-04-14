@@ -1,21 +1,22 @@
-import * as React from 'react'
-import Box from '@mui/material/Box'
-import TextField from '@mui/material/TextField'
-import { useRecoilState } from 'recoil'
-import { pageDataState } from 'src/recoil/table'
-import Select, { SelectChangeEvent } from '@mui/material/Select'
-import MenuItem from '@mui/material/MenuItem'
-import Button from '@mui/material/Button'
-import { getBoardApi } from 'src/apis/tableApi'
-import router from 'next/router'
+import * as React from 'react';
+import Box from '@mui/material/Box';
+import TextField from '@mui/material/TextField';
+import { useRecoilState } from 'recoil';
+import { pageDataState, tableDataState } from 'src/recoil/table';
+import Select, { SelectChangeEvent } from '@mui/material/Select';
+import MenuItem from '@mui/material/MenuItem';
+import Button from '@mui/material/Button';
+import { getBoardApi } from 'src/apis/tableApi';
+import router from 'next/router';
 
 interface SearchBarProps {
-  category: string
-  type: string
+  category: string;
+  type: string;
 }
 
 export default function CustomSearchBar(props: SearchBarProps) {
-  const [pageData, setPageDataState] = useRecoilState(pageDataState)
+  const [pageData, setPageDataState] = useRecoilState(pageDataState);
+  const [tableData, setTableDataState] = useRecoilState(tableDataState);
 
   const SearchList = async () => {
     const res = await getBoardApi({
@@ -25,13 +26,16 @@ export default function CustomSearchBar(props: SearchBarProps) {
       pageSize: pageData.pageSize,
       search: pageData.search,
       searchOption: pageData.searchOption
-    })
-
-    if (res) {
-      console.log(res)
-      return res
+    });
+    console.log(res);
+    if (res && res.success) {
+      console.log(res);
+      setTableDataState(() => ({
+        datas: res.data.dtoList
+      }));
+      return res;
     }
-  }
+  };
 
   return (
     <Box
@@ -58,7 +62,7 @@ export default function CustomSearchBar(props: SearchBarProps) {
             setPageDataState(prev => ({
               ...prev,
               searchOption: e.target.value
-            }))
+            }));
           }}
         >
           <MenuItem value={'title'}>글제목</MenuItem>
@@ -67,11 +71,14 @@ export default function CustomSearchBar(props: SearchBarProps) {
         </Select>
         <TextField
           value={pageData.search}
+          onKeyDown={(e: React.KeyboardEvent<HTMLDivElement>) => {
+            if (e.key === 'Enter') SearchList();
+          }}
           onChange={(e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
             setPageDataState(prev => ({
               ...prev,
               search: e.target.value
-            }))
+            }));
           }}
           label='검색어'
           id='outlined-size-small'
@@ -82,5 +89,5 @@ export default function CustomSearchBar(props: SearchBarProps) {
         </Button>
       </Box>
     </Box>
-  )
+  );
 }
