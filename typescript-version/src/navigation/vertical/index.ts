@@ -23,7 +23,7 @@ const navigation = (): VerticalNavItemsType => {
     {
       title: 'Account Settings',
       icon: AccountCogOutline,
-      path: '/account-settings'
+      path: '/account'
     },
     {
       sectionTitle: '농구'

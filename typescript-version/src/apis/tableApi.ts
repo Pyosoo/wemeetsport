@@ -11,10 +11,12 @@ interface getBoardType {
   pageSize: number;
   search: string;
   searchOption: string;
+  from: string,
+  to: string;
 }
 interface ApiResponse {
   success: boolean;
-  data: string;
+  data: string | object;
 }
 
 export const getBoardApi = async (props: getBoardType) => {
@@ -35,7 +37,7 @@ interface makeBoardType {
   type: string;
   title: string;
   content: string;
-  date: string;
+  matchDate: string;
 }
 
 export const makeBoardApi = async (props: makeBoardType) => {

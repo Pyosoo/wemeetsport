@@ -49,7 +49,7 @@ code[class*='language-'] {
   border-radius: 3px;
   border: 1px solid black;
 }
-
+.cursorHover:hover{cursor: pointer;}
 .hover:hover{
   cursor: pointer;
   background-color: rgb(219, 219, 219);

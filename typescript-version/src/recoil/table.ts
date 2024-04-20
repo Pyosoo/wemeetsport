@@ -1,6 +1,6 @@
 import { atom } from 'recoil';
 import { recoilPersist } from 'recoil-persist';
-
+import moment from 'moment';
 const localStorage = typeof window !== 'undefined' ? window.localStorage : undefined;
 
 interface tableRow {
@@ -32,7 +32,9 @@ export const pageDataState = atom({
     pageNo: 1,
     pageSize: 10,
     search: '',
-    searchOption: 'title' // title, content, writer(nickname)
+    searchOption: 'title', // title, content, writer(nickname),
+    from: moment(new Date()).format('YYYY-MM-DD'),
+    to: moment(new Date()).format('YYYY-MM-DD')
   },
   effects_UNSTABLE: [persistAtom]
 });

@@ -23,7 +23,7 @@ const AppBarContent = (props: Props) => {
   return (
     <Box sx={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
       <Box className='actions-right' sx={{ display: 'flex', alignItems: 'center', marginLeft: 'auto' }}>
-        {session.nickName}님 어서오세요,
+        <span>{session.nickName}</span>님 어서오세요,
         <NotificationDropdown />
         <UserDropdown />
       </Box>

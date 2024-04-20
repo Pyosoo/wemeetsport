@@ -39,6 +39,7 @@ export default function Makeboard() {
       }));
     };
   }, []);
+  console.log(makeBoard);
 
   const makeBoardFunc = async () => {
     // const params = {
@@ -75,7 +76,7 @@ export default function Makeboard() {
       type: makeBoard.type,
       title: makeBoard.title,
       content: makeBoard.content,
-      date: makeBoard.date
+      matchDate: makeBoard.date
     });
 
     if (res && res.success) {
@@ -192,6 +193,11 @@ export default function Makeboard() {
             value={makeBoard.content}
             sx={{ width: '50%', minHeight: 500, marginTop: '10px' }}
             id='outlined-multiline-flexible'
+            placeholder={`
+            시합초청: 팀명,인원수,유니폼,연령대,실력 등 상세 입력  \n
+            팀원모집: 활동지역, 연령대, 실력 등 상세 기입 \n
+            대관정보: 체육관위치(대략), 가격 등 상세 기입
+            `}
             label='글내용'
             multiline
             maxRows={100}

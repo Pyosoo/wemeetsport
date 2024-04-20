@@ -34,7 +34,7 @@ interface tableRow {
 }
 
 interface propTypes {
-  data: tableRow[];
+  tableData: tableRow[];
 }
 
 export default function CustomTable(props: propTypes) {
@@ -45,7 +45,7 @@ export default function CustomTable(props: propTypes) {
     if (res && res.success) {
       setSelectedBoardItem(prev => ({
         ...prev,
-        ...res.data
+        ...(res.data as object)
       }));
       router.push(`/boardItem/${boardNo}`);
     }

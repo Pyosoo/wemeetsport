@@ -1,4 +1,3 @@
-// useSession.js
 import { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { refreshToken } from 'src/apis/userApi';
@@ -22,7 +21,7 @@ const useSession = () => {
     if (!at || !rt) {
       router.push('/login');
     }
-    if (at) {
+    if (at && rt) {
       const atDecoded: atInterface = jwtDecode(at);
       const cur = new Date().getTime();
       const sessionExpTime = parseInt(atDecoded.exp + '000');
@@ -40,7 +39,7 @@ const useSession = () => {
       };
 
       if (cur > sessionExpTime) {
-        console.log('refreshToken 을 진행합니다.');
+        console.log('refreshToken!');
         refreshSession();
       } else {
         console.log('Token is alive.');

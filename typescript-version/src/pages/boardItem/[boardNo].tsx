@@ -3,6 +3,17 @@ import router from 'next/router';
 import React from 'react';
 import { useRecoilState } from 'recoil';
 import { selectedBoardItem } from 'src/recoil/table';
+import { KeyboardArrowLeft } from '@material-ui/icons';
+
+const boardType = {
+  invite: '시합 초청',
+  recruit: '팀원 모집',
+  rental: '대관 정보'
+};
+const categoryType = {
+  basketball: '농구',
+  soccer: '축구'
+};
 
 export default function BoardItem() {
   const [boardData, setBoardData] = useRecoilState(selectedBoardItem);
@@ -12,8 +23,11 @@ export default function BoardItem() {
   return (
     <Box>
       <Box display={'flex'}>
-        <Box onClick={() => router.back()}>←</Box>
-        <Box>제목</Box> {boardData.title}
+        <Box onClick={() => router.back()}>
+          <KeyboardArrowLeft className='cursorHover' />
+        </Box>
+        <Box sx={{ marginLeft: '20px' }}>제목</Box> {boardData.title} ({boardType[boardData.type]}) (
+        {categoryType[boardData.category]})
         <Box sx={{ marginLeft: 'auto' }}>
           {boardData.createdAt}
           <span style={{ marginLeft: '10px', color: boardData.status === '완료' ? 'green' : 'red' }}>
@@ -23,10 +37,10 @@ export default function BoardItem() {
       </Box>
       <div className='divider' />
       <Box>
-        <Box>
-          종목: {boardData.category} 게시판종류: {boardData.type}
-        </Box>
+        <Box>종목: ({boardData.category})</Box>
       </Box>
+
+      <div className='divider' />
       <Box>
         <Box>{boardData.content}</Box>
       </Box>

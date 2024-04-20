@@ -1,6 +1,7 @@
 // ** MUI Imports
 import { Box } from '@mui/material';
 import Grid from '@mui/material/Grid';
+import moment from 'moment';
 import { useEffect, useState } from 'react';
 import { useRecoilState } from 'recoil';
 import { getBoardApi } from 'src/apis/tableApi';
@@ -22,7 +23,7 @@ interface tableRow {
   type: string;
 }
 
-const Invite = () => {
+const Page = () => {
   const [pageData, setPageData] = useRecoilState(pageDataState);
   const [tableData, setTableData] = useRecoilState(tableDataState);
 
@@ -36,7 +37,9 @@ const Invite = () => {
         pageNo: pageData.pageNo,
         pageSize: pageData.pageSize,
         search: pageData.search,
-        searchOption: pageData.searchOption
+        searchOption: pageData.searchOption,
+        from: pageData.from,
+        to: pageData.to
       });
       if (res && res.success) {
         setTableData(() => ({
@@ -44,7 +47,6 @@ const Invite = () => {
         }));
       }
     };
-
     getBoard();
 
     return () => {
@@ -52,15 +54,18 @@ const Invite = () => {
         pageNo: 1,
         pageSize: 10,
         search: '',
-        searchOption: 'title'
+        searchOption: 'title',
+        from: moment(new Date()).format('YYYY-MM-DD'),
+        to: moment(new Date()).format('YYYY-MM-DD')
       }));
     };
   }, []);
 
+  console.log(pageData);
   console.log(tableData);
 
   return (
-    <Grid container spacing={6} onClick={() => console.log(tableData)}>
+    <Grid container spacing={6}>
       <Grid item xs={12}>
         <div>
           <CustomSearchBar category='basketball' type='invite' />
@@ -76,4 +81,4 @@ const Invite = () => {
   );
 };
 
-export default Invite;
+export default Page;
