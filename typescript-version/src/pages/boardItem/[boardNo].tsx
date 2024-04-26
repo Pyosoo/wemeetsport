@@ -4,6 +4,10 @@ import React from 'react';
 import { useRecoilState } from 'recoil';
 import { selectedBoardItem } from 'src/recoil/table';
 import { KeyboardArrowLeft } from '@material-ui/icons';
+import Stack from '@mui/material/Stack';
+import Button from '@mui/material/Button';
+import { sessionState } from 'src/recoil/user';
+import { modalState } from 'src/recoil/states';
 
 const boardType = {
   invite: '시합 초청',
@@ -17,8 +21,19 @@ const categoryType = {
 
 export default function BoardItem() {
   const [boardData, setBoardData] = useRecoilState(selectedBoardItem);
+  const [session, setSessionState] = useRecoilState(sessionState);
+  const [modalRC, setModalRC] = useRecoilState(modalState);
 
   console.log(boardData);
+  console.log(router);
+
+  const handleApply = async () => {
+    setModalRC(prev => ({
+      ...prev,
+      open: true,
+      type: 'invite'
+    }));
+  };
 
   return (
     <Box>
@@ -36,13 +51,15 @@ export default function BoardItem() {
         </Box>
       </Box>
       <div className='divider' />
-      <Box>
-        <Box>종목: ({boardData.category})</Box>
-      </Box>
 
-      <div className='divider' />
       <Box>
         <Box>{boardData.content}</Box>
+      </Box>
+
+      <Box sx={{ display: 'flex', justifyContent: 'center', margin: '35px 0' }}>
+        <Button onClick={() => handleApply()} variant='contained'>
+          {boardData.status ? '매칭 완료' : '신청하기'}
+        </Button>
       </Box>
     </Box>
   );

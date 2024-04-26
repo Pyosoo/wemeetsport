@@ -38,14 +38,17 @@ interface propTypes {
 }
 
 export default function CustomTable(props: propTypes) {
-  const [BoardItem, setSelectedBoardItem] = useRecoilState(selectedBoardItem);
   console.log(props);
+
+  const [BoardItem, setSelectedBoardItem] = useRecoilState(selectedBoardItem);
+
   const getBoardItem = async (boardNo: number) => {
     const res = await getBoardItemApi(boardNo + '');
     if (res && res.success) {
       setSelectedBoardItem(prev => ({
         ...prev,
-        ...(res.data as object)
+        boardNo: boardNo,
+        boardData: res.data as object
       }));
       router.push(`/boardItem/${boardNo}`);
     }
@@ -59,6 +62,7 @@ export default function CustomTable(props: propTypes) {
             <TableCell>글제목</TableCell>
             <TableCell align='right'>작성자</TableCell>
             <TableCell align='right'>작성일</TableCell>
+            <TableCell align='right'>경기일</TableCell>
             <TableCell align='right'>상태</TableCell>
           </TableRow>
         </TableHead>
@@ -76,7 +80,10 @@ export default function CustomTable(props: propTypes) {
                   </TableCell>
                   <TableCell align='right'>{row.nickName}</TableCell>
                   <TableCell align='right'>{row.createdAt}</TableCell>
-                  <TableCell align='right'>{row.status}</TableCell>
+                  <TableCell align='right'>{row.matchDate}</TableCell>
+                  <TableCell align='right'>
+                    {row.status ? <span style={{ color: 'green' }}>●</span> : <span style={{ color: 'red' }}>●</span>}
+                  </TableCell>
                 </TableRow>
               ))
             : null}

@@ -1,6 +1,5 @@
 import axios, { AxiosResponse } from 'axios';
 import Cookies from 'js-cookie';
-import moment from 'moment';
 
 const API_URL = 'http://3.80.99.192:8080';
 
@@ -16,7 +15,7 @@ interface getBoardType {
 }
 interface ApiResponse {
   success: boolean;
-  data: string | object;
+  data: string | object | undefined;
 }
 
 export const getBoardApi = async (props: getBoardType) => {
@@ -38,6 +37,12 @@ interface makeBoardType {
   title: string;
   content: string;
   matchDate: string;
+}
+
+interface boardApplyType{
+  boardNo: string;
+  applicantEmail: string;
+  message: string;
 }
 
 export const makeBoardApi = async (props: makeBoardType) => {
@@ -64,6 +69,31 @@ export const makeBoardApi = async (props: makeBoardType) => {
 export const getBoardItemApi = async (boardNo: string) => {
   const res = await axios
     .get(`${API_URL}/board/${boardNo}`)
+    .then((response: AxiosResponse<ApiResponse>) => response.data)
+    .catch(err => {
+      console.log(err);
+    });
+
+  return res;
+};
+
+
+
+export const boardApply = async (props: boardApplyType) => {
+  console.log(props);
+  return ;
+  const res = await axios
+    .post(
+      `${API_URL}/board/api/register`,
+      {
+        ...props
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${Cookies.get('WMS_accessToken')}`
+        }
+      }
+    )
     .then((response: AxiosResponse<ApiResponse>) => response.data)
     .catch(err => {
       console.log(err);

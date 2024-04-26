@@ -51,6 +51,7 @@ export const makeBoardState = atom({
   effects_UNSTABLE: [persistAtom]
 });
 
+
 export const tableDataState = atom({
   key: 'tableData',
   default: {
@@ -61,6 +62,9 @@ export const tableDataState = atom({
 
 export const selectedBoardItem = atom({
   key: 'selectedBoardItem',
-  default: {},
+  default: {
+    boardNo:'',
+    boardData: ''
+  },
   effects_UNSTABLE: [persistAtom]
 });

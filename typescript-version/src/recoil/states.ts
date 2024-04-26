@@ -12,6 +12,7 @@ const nameState = atom({
   key: 'nameState',
   default: ''
 });
+
 const snackbarState = atom({
   key: 'snackbarState',
   default: {
@@ -22,4 +23,14 @@ const snackbarState = atom({
   effects_UNSTABLE: [persistAtom]
 });
 
-export { nameState, snackbarState };
+const modalState = atom({
+  key: 'modalState',
+  default: {
+    open: false,
+    message: '',
+    type: ''
+  }
+})
+
+
+export { nameState, snackbarState, modalState };

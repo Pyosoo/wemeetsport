@@ -21,7 +21,7 @@ const navigation = (): VerticalNavItemsType => {
       path: '/'
     },
     {
-      title: 'Account Settings',
+      title: '계정 활동',
       icon: AccountCogOutline,
       path: '/account'
     },

@@ -65,7 +65,7 @@ const Page = () => {
   console.log(tableData);
 
   return (
-    <Grid container spacing={6}>
+    <Grid container spacing={6} sx={{ minWidth: '1070px' }}>
       <Grid item xs={12}>
         <div>
           <CustomSearchBar category='basketball' type='invite' />
