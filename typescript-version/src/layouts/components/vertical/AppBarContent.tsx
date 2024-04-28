@@ -1,7 +1,6 @@
 // ** MUI Imports
 import Box from '@mui/material/Box';
 import { Settings } from 'src/@core/context/settingsContext';
-import ModeToggler from 'src/@core/layouts/components/shared-components/ModeToggler';
 import UserDropdown from 'src/@core/layouts/components/shared-components/UserDropdown';
 import NotificationDropdown from 'src/@core/layouts/components/shared-components/NotificationDropdown';
 import { useRecoilState } from 'recoil';

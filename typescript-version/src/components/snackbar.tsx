@@ -1,6 +1,6 @@
 import * as React from 'react';
 import Box from '@mui/material/Box';
-import Snackbar, { SnackbarOrigin } from '@mui/material/Snackbar';
+import Snackbar from '@mui/material/Snackbar';
 import { useRecoilState } from 'recoil';
 import { snackbarState } from 'src/recoil/states';
 
@@ -17,7 +17,7 @@ export default function CustomSnackbar() {
   };
 
   return snackbar.type === 'success' ? (
-    <Box sx={{ width: 500 }}>
+    <Box sx={{ width: 500, textAlign: 'center' }}>
       <Snackbar
         className='snackbar_success'
         autoHideDuration={2000}
@@ -28,7 +28,7 @@ export default function CustomSnackbar() {
       />
     </Box>
   ) : (
-    <Box sx={{ width: 500 }}>
+    <Box sx={{ width: 500, textAlign: 'center' }}>
       <Snackbar
         className='snackbar_error'
         autoHideDuration={2000}

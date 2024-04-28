@@ -18,32 +18,38 @@ const useSession = () => {
   const rt = Cookies.get('WMS_refreshToken');
 
   useEffect(() => {
-    if (!at || !rt) {
-      router.push('/login');
-    }
-    if (at && rt) {
-      const atDecoded: atInterface = jwtDecode(at);
-      const cur = new Date().getTime();
-      const sessionExpTime = parseInt(atDecoded.exp + '000');
-
-      const refreshSession = async () => {
-        const res = await refreshToken(at, rt);
-        if (res && res.success) {
-          Cookies.set('WMS_accessToken', res.data.accessToken);
-          Cookies.set('WMS_refreshToken', res.data.refreshToken);
-        } else {
-          Cookies.remove('WMS_accessToken');
-          Cookies.remove('WMS_refreshToken');
-          router.push('/login');
-        }
-      };
-
-      if (cur > sessionExpTime) {
-        console.log('refreshToken!');
-        refreshSession();
-      } else {
-        console.log('Token is alive.');
+    try {
+      if (!at || !rt) {
+        router.push('/login');
       }
+      if (at && rt) {
+        const atDecoded: atInterface = jwtDecode(at);
+        const cur = new Date().getTime();
+        const sessionExpTime = parseInt(atDecoded.exp + '000');
+
+        const refreshSession = async () => {
+          const res = await refreshToken(at, rt);
+          if (res && res.success) {
+            Cookies.set('WMS_accessToken', res.data.accessToken);
+            Cookies.set('WMS_refreshToken', res.data.refreshToken);
+          } else {
+            Cookies.remove('WMS_accessToken');
+            Cookies.remove('WMS_refreshToken');
+            router.push('/login');
+          }
+        };
+
+        if (cur > sessionExpTime) {
+          console.log('refreshToken!');
+          refreshSession();
+        } else {
+          console.log('Token is alive.');
+        }
+      } else {
+        router.push('/login');
+      }
+    } catch (err) {
+      router.push('/login');
     }
   }, [at, rt, router]);
 };
