@@ -1,29 +1,30 @@
 // ** React Imports
-import { useState, SyntheticEvent, Fragment } from 'react'
+import { useState, SyntheticEvent, Fragment } from 'react';
 
 // ** Next Import
-import { useRouter } from 'next/router'
+import { useRouter } from 'next/router';
 
 // ** MUI Imports
-import Box from '@mui/material/Box'
-import Menu from '@mui/material/Menu'
-import Badge from '@mui/material/Badge'
-import Avatar from '@mui/material/Avatar'
-import Divider from '@mui/material/Divider'
-import MenuItem from '@mui/material/MenuItem'
-import { styled } from '@mui/material/styles'
-import Typography from '@mui/material/Typography'
+import Box from '@mui/material/Box';
+import Menu from '@mui/material/Menu';
+import Badge from '@mui/material/Badge';
+import Avatar from '@mui/material/Avatar';
+import Divider from '@mui/material/Divider';
+import MenuItem from '@mui/material/MenuItem';
+import { styled } from '@mui/material/styles';
+import Typography from '@mui/material/Typography';
 
 // ** Icons Imports
-import CogOutline from 'mdi-material-ui/CogOutline'
-import CurrencyUsd from 'mdi-material-ui/CurrencyUsd'
-import EmailOutline from 'mdi-material-ui/EmailOutline'
-import LogoutVariant from 'mdi-material-ui/LogoutVariant'
-import AccountOutline from 'mdi-material-ui/AccountOutline'
-import MessageOutline from 'mdi-material-ui/MessageOutline'
-import HelpCircleOutline from 'mdi-material-ui/HelpCircleOutline'
-import { useRecoilState } from 'recoil'
-import { sessionState } from 'src/recoil/user'
+import CogOutline from 'mdi-material-ui/CogOutline';
+import CurrencyUsd from 'mdi-material-ui/CurrencyUsd';
+import EmailOutline from 'mdi-material-ui/EmailOutline';
+import LogoutVariant from 'mdi-material-ui/LogoutVariant';
+import AccountOutline from 'mdi-material-ui/AccountOutline';
+import MessageOutline from 'mdi-material-ui/MessageOutline';
+import HelpCircleOutline from 'mdi-material-ui/HelpCircleOutline';
+import { useRecoilState } from 'recoil';
+import { sessionState } from 'src/recoil/user';
+import Cookies from 'js-cookie';
 
 // ** Styled Components
 const BadgeContentSpan = styled('span')(({ theme }) => ({
@@ -32,34 +33,42 @@ const BadgeContentSpan = styled('span')(({ theme }) => ({
   borderRadius: '50%',
   backgroundColor: theme.palette.success.main,
   boxShadow: `0 0 0 2px ${theme.palette.background.paper}`
-}))
+}));
 
 const UserDropdown = () => {
   // ** States
-  const [anchorEl, setAnchorEl] = useState<Element | null>(null)
-  const [session, setSessionState] = useRecoilState(sessionState)
+  const [anchorEl, setAnchorEl] = useState<Element | null>(null);
+  const [session, setSessionState] = useRecoilState(sessionState);
 
   // ** Hooks
-  const router = useRouter()
+  const router = useRouter();
 
   const handleDropdownOpen = (event: SyntheticEvent) => {
-    setAnchorEl(event.currentTarget)
-  }
+    setAnchorEl(event.currentTarget);
+  };
 
   const handleDropdownClose = (url?: string) => {
     // test code
     if (url && url === '/login') {
-      setSessionState(prev => ({
-        ...prev,
-        state: false
-      }))
+      Cookies.remove('WMS_accessToken');
+      Cookies.remove('WMS_refreshToken');
+      setSessionState(() => ({
+        state: false,
+        email: '',
+        nickName: '',
+        mobile: '',
+        exp: '',
+        iat: '',
+        accessToken: '',
+        refreshToken: ''
+      }));
     }
 
     if (url) {
-      router.push(url)
+      router.push(url);
     }
-    setAnchorEl(null)
-  }
+    setAnchorEl(null);
+  };
 
   const styles = {
     py: 2,
@@ -73,7 +82,7 @@ const UserDropdown = () => {
       fontSize: '1.375rem',
       color: 'text.secondary'
     }
-  }
+  };
 
   return (
     <Fragment>
@@ -117,51 +126,20 @@ const UserDropdown = () => {
           </Box>
         </Box>
         <Divider sx={{ mt: 0, mb: 1 }} />
-        <MenuItem sx={{ p: 0 }} onClick={() => handleDropdownClose()}>
+        <MenuItem sx={{ p: 0 }} onClick={() => handleDropdownClose('/account')}>
           <Box sx={styles}>
             <AccountOutline sx={{ marginRight: 2 }} />
-            Profile
-          </Box>
-        </MenuItem>
-        <MenuItem sx={{ p: 0 }} onClick={() => handleDropdownClose()}>
-          <Box sx={styles}>
-            <EmailOutline sx={{ marginRight: 2 }} />
-            Inbox
-          </Box>
-        </MenuItem>
-        <MenuItem sx={{ p: 0 }} onClick={() => handleDropdownClose()}>
-          <Box sx={styles}>
-            <MessageOutline sx={{ marginRight: 2 }} />
-            Chat
-          </Box>
-        </MenuItem>
-        <Divider />
-        <MenuItem sx={{ p: 0 }} onClick={() => handleDropdownClose()}>
-          <Box sx={styles}>
-            <CogOutline sx={{ marginRight: 2 }} />
-            Settings
-          </Box>
-        </MenuItem>
-        <MenuItem sx={{ p: 0 }} onClick={() => handleDropdownClose()}>
-          <Box sx={styles}>
-            <CurrencyUsd sx={{ marginRight: 2 }} />
-            Pricing
-          </Box>
-        </MenuItem>
-        <MenuItem sx={{ p: 0 }} onClick={() => handleDropdownClose()}>
-          <Box sx={styles}>
-            <HelpCircleOutline sx={{ marginRight: 2 }} />
-            FAQ
+            활동알림
           </Box>
         </MenuItem>
         <Divider />
         <MenuItem sx={{ py: 2 }} onClick={() => handleDropdownClose('/login')}>
           <LogoutVariant sx={{ marginRight: 2, fontSize: '1.375rem', color: 'text.secondary' }} />
-          Logout
+          로그아웃
         </MenuItem>
       </Menu>
     </Fragment>
-  )
-}
+  );
+};
 
-export default UserDropdown
+export default UserDropdown;

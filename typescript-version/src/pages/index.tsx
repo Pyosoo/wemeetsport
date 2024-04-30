@@ -1,18 +1,15 @@
-import { useEffect } from 'react'
-import { nameState } from 'src/recoil/states'
-import { useRecoilState } from 'recoil'
-import useSession from 'src/hooks/useSession'
+import { useEffect } from 'react';
+import { useRecoilState } from 'recoil';
+import useSession from 'src/hooks/useSession';
 
 const Dashboard = () => {
-  const session = useSession()
-
-  const [name, setNameState] = useRecoilState(nameState)
+  const session = useSession();
 
   useEffect(() => {
-    console.log(name)
-  }, [])
+    console.log('main /');
+  }, []);
 
-  return <div>index.tsx</div>
-}
+  return <div>index.tsx</div>;
+};
 
-export default Dashboard
+export default Dashboard;

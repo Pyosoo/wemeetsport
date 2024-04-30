@@ -1,7 +1,7 @@
 import axios, { AxiosResponse } from 'axios';
 import Cookies from 'js-cookie';
 
-const API_URL = 'http://3.80.99.192:8080';
+const API_URL = 'http://54.204.129.209:8080';
 
 interface registerType {
   email: string;

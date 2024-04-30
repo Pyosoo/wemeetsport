@@ -7,7 +7,7 @@ import { KeyboardArrowLeft } from '@material-ui/icons';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import { sessionState } from 'src/recoil/user';
-import { modalState } from 'src/recoil/states';
+import { modalState, snackbarState } from 'src/recoil/states';
 
 const boardType = {
   invite: '시합 초청',
@@ -23,16 +23,42 @@ export default function BoardItem() {
   const [boardData, setBoardData] = useRecoilState(selectedBoardItem);
   const [session, setSessionState] = useRecoilState(sessionState);
   const [modalRC, setModalRC] = useRecoilState(modalState);
+  const [snackbarStateRC, setSnackbarStateRC] = useRecoilState(snackbarState);
 
   console.log(boardData);
   console.log(router);
 
   const handleApply = async () => {
-    setModalRC(prev => ({
+    if (boardData.email === session.email) {
+      setSnackbarStateRC(() => ({
+        open: true,
+        message: '본인글엔 신청할 수 없습니다.',
+        type: 'error'
+      }));
+      return;
+    }
+
+    const res = await setModalRC(prev => ({
       ...prev,
       open: true,
       type: 'invite'
     }));
+
+    if (res && res.success) {
+      setSnackbarStateRC(prev => ({
+        ...prev,
+        open: true,
+        message: '신청되었습니다.',
+        type: 'success'
+      }));
+    } else {
+      setSnackbarStateRC(prev => ({
+        ...prev,
+        open: true,
+        message: res.data,
+        type: 'error'
+      }));
+    }
   };
 
   return (

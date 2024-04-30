@@ -8,11 +8,6 @@ const { persistAtom } = recoilPersist({
   storage: localStorage
 });
 
-const nameState = atom({
-  key: 'nameState',
-  default: ''
-});
-
 const snackbarState = atom({
   key: 'snackbarState',
   default: {
@@ -33,4 +28,4 @@ const modalState = atom({
 })
 
 
-export { nameState, snackbarState, modalState };
+export { snackbarState, modalState };

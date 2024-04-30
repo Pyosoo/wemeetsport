@@ -21,10 +21,6 @@ const { persistAtom } = recoilPersist({
   storage: localStorage
 });
 
-const nameState = atom({
-  key: 'nameState',
-  default: ''
-});
 
 export const pageDataState = atom({
   key: 'pageData',
