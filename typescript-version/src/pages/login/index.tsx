@@ -33,6 +33,8 @@ import { sessionState, loginState } from 'src/recoil/user';
 import { useRecoilLogger } from 'src/hooks/useRecoilLogger';
 import { loginApi } from 'src/apis/userApi';
 import { jwtDecode } from 'jwt-decode';
+import { LoadingButton } from '@mui/lab';
+import { snackbarState } from 'src/recoil/states';
 
 // ** Styled Components
 const Card = styled(MuiCard)<CardProps>(({ theme }) => ({
@@ -53,6 +55,8 @@ const LoginPage = () => {
 
   const [session, setSessionState] = useRecoilState(sessionState);
   const [loginInfo, setLoginState] = useRecoilState(loginState);
+  const [isLoading, setIsLoading] = useState(false);
+  const [setSnackbar, setSnackbarState] = useRecoilState(snackbarState);
 
   // ** Hook
   const router = useRouter();
@@ -75,6 +79,7 @@ const LoginPage = () => {
   }
 
   const handleLogIn = async () => {
+    setIsLoading(true);
     const res = await loginApi(loginInfo.email, loginInfo.password);
     if (res && res.success) {
       const resData: sessionInterface = jwtDecode(res.data.accessToken);
@@ -90,8 +95,15 @@ const LoginPage = () => {
         refreshToken: res.data.refreshToken
       }));
       router.push('/');
+      setIsLoading(false);
     } else {
-      console.log(res);
+      setSnackbarState(prev => ({
+        ...prev,
+        open: true,
+        type: 'error',
+        message: '로그인 오류'
+      }));
+      setIsLoading(false);
     }
   };
 
@@ -161,9 +173,21 @@ const LoginPage = () => {
                 <LinkStyled onClick={e => e.preventDefault()}>Forgot Password?</LinkStyled>
               </Link>
             </Box>
-            <Button fullWidth size='large' variant='contained' sx={{ marginBottom: 7 }} onClick={handleLogIn}>
-              로그인
-            </Button>
+            {isLoading ? (
+              <LoadingButton
+                sx={{ display: 'block', marginLeft: 'auto', marginRight: 'auto', width: '100%', marginBottom: 7 }}
+                size='large'
+                loading
+                variant='outlined'
+              >
+                .
+              </LoadingButton>
+            ) : (
+              <Button fullWidth size='large' variant='contained' sx={{ marginBottom: 7 }} onClick={handleLogIn}>
+                로그인
+              </Button>
+            )}
+
             <Box sx={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', justifyContent: 'center' }}>
               <Typography variant='body2' sx={{ marginRight: 2 }}>
                 회원이 아니신가요?
