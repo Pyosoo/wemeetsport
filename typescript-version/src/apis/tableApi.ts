@@ -1,6 +1,5 @@
 import axios, { AxiosResponse } from 'axios';
 import Cookies from 'js-cookie';
-
 const API_URL = 'http://54.204.129.209:8080';
 
 interface getBoardType {

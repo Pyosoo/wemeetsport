@@ -1,7 +1,7 @@
 import { Box } from '@mui/material';
 import router from 'next/router';
 import React from 'react';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import { selectedBoardItem } from 'src/recoil/table';
 import { KeyboardArrowLeft } from '@material-ui/icons';
 import Stack from '@mui/material/Stack';
@@ -20,13 +20,12 @@ const categoryType = {
 };
 
 export default function BoardItem() {
-  const [boardData, setBoardData] = useRecoilState(selectedBoardItem);
+  const { boardData } = useRecoilValue(selectedBoardItem);
   const [session, setSessionState] = useRecoilState(sessionState);
   const [modalRC, setModalRC] = useRecoilState(modalState);
   const [snackbarStateRC, setSnackbarStateRC] = useRecoilState(snackbarState);
 
   console.log(boardData);
-  console.log(router);
 
   const handleApply = async () => {
     if (boardData.email === session.email) {

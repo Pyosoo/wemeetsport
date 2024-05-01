@@ -45,6 +45,7 @@ export default function CustomTable(props: propTypes) {
   const getBoardItem = async (boardNo: number) => {
     const res = await getBoardItemApi(boardNo + '');
     if (res && res.success) {
+      console.log(res.data);
       setSelectedBoardItem(prev => ({
         ...prev,
         boardNo: boardNo,

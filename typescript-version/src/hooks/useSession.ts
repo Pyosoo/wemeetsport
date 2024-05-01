@@ -3,6 +3,8 @@ import { useRouter } from 'next/router';
 import { refreshToken } from 'src/apis/userApi';
 import Cookies from 'js-cookie';
 import { jwtDecode } from 'jwt-decode';
+import { useRecoilValue } from 'recoil';
+import { sessionState } from 'src/recoil/user';
 
 interface atInterface {
   mobile: string;
@@ -16,10 +18,19 @@ const useSession = () => {
   const router = useRouter();
   const at = Cookies.get('WMS_accessToken');
   const rt = Cookies.get('WMS_refreshToken');
+  const session = useRecoilValue(sessionState);
+
+  console.log(session);
 
   useEffect(() => {
     try {
       if (!at || !rt) {
+        router.push('/login');
+      }
+      if(!session.accessToken || session.accessToken.length === 0){
+        console.log('session state가 올바르지 않음')
+        Cookies.remove('WMS_accessToken');
+        Cookies.remove('WMS_refreshToken');
         router.push('/login');
       }
       if (at && rt) {
@@ -51,7 +62,9 @@ const useSession = () => {
     } catch (err) {
       router.push('/login');
     }
-  }, [at, rt, router]);
+  }, [at, rt, router, session]); // Recoil 상태를 의존성으로 추가
+
+  return session; // 이 부분은 필요에 따라 변경 가능합니다.
 };
 
 export default useSession;

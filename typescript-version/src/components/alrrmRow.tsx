@@ -14,6 +14,6 @@ interface alarmInterface {
   message: string;
 }
 
-export default function AlarmRow(props: alramInterface) {
+export default function AlarmRow(props: alarmInterface) {
   return <Box sx={{ backgroundColor: 'white', borderRadius: '7px', width: '75%' }}>test</Box>;
 }

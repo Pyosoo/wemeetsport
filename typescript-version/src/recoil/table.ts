@@ -1,6 +1,6 @@
 import { atom } from 'recoil';
 import { recoilPersist } from 'recoil-persist';
-import moment from 'moment';
+import dayjs from 'dayjs';
 const localStorage = typeof window !== 'undefined' ? window.localStorage : undefined;
 
 interface tableRow {
@@ -28,9 +28,9 @@ export const pageDataState = atom({
     pageNo: 1,
     pageSize: 10,
     search: '',
-    searchOption: 'title', // title, content, writer(nickname),
-    from: moment(new Date()).format('YYYY-MM-DD'),
-    to: moment(new Date()).format('YYYY-MM-DD')
+    searchOption: 'title', // title, content, nickname,
+    from: dayjs().subtract(1, 'year').format('YYYY-MM-DD'), // Day.js 사용
+    to: dayjs(new Date()).format('YYYY-MM-DD') // Day.js 사용
   },
   effects_UNSTABLE: [persistAtom]
 });

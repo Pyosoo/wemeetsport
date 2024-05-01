@@ -59,10 +59,11 @@ export default function CustomSearchBar(props: SearchBarProps) {
           <LocalizationProvider dateAdapter={AdapterDayjs}>
             <DemoContainer sx={{ padding: '0 !important' }} components={['DatePicker']}>
               <DatePicker
+                // value={dayjs(pageData.from).toDate()}
                 onChange={date => {
                   setPageDataState(prev => ({
                     ...prev,
-                    from: moment(dayjs(date).toDate()).format('YYYY-MM-DD')
+                    from: dayjs(date).format('YYYY-MM-DD')
                   }));
                 }}
                 label='시작일'
@@ -73,10 +74,11 @@ export default function CustomSearchBar(props: SearchBarProps) {
           <LocalizationProvider dateAdapter={AdapterDayjs}>
             <DemoContainer sx={{ padding: '0 !important' }} components={['DatePicker']}>
               <DatePicker
+                // value={pageData.to}
                 onChange={date => {
                   setPageDataState(prev => ({
                     ...prev,
-                    to: moment(dayjs(date).toDate()).format('YYYY-MM-DD')
+                    to: dayjs(date).format('YYYY-MM-DD')
                   }));
                 }}
                 label='마감일'
@@ -96,7 +98,7 @@ export default function CustomSearchBar(props: SearchBarProps) {
           }}
         >
           <MenuItem value={'title'}>글제목</MenuItem>
-          <MenuItem value={'writer'}>작성자</MenuItem>
+          <MenuItem value={'nickName'}>작성자</MenuItem>
           <MenuItem value={'content'}>글내용</MenuItem>
         </Select>
         <TextField
