@@ -1,20 +1,9 @@
 import { atom } from 'recoil';
 import { recoilPersist } from 'recoil-persist';
 import dayjs from 'dayjs';
+import { tableRowInterface } from 'src/interfaces/interfaces';
 const localStorage = typeof window !== 'undefined' ? window.localStorage : undefined;
 
-interface tableRow {
-  boardNo: number;
-  category: string;
-  content: string;
-  createdAt: string;
-  email: string;
-  matchDate: string;
-  nickName: string;
-  status: string;
-  title: string;
-  type: string;
-}
 
 const { persistAtom } = recoilPersist({
   key: 'recoil-states',
@@ -51,7 +40,7 @@ export const makeBoardState = atom({
 export const tableDataState = atom({
   key: 'tableData',
   default: {
-    datas: [] as tableRow[]
+    datas: [] as tableRowInterface[]
   },
   effects_UNSTABLE: [persistAtom]
 });

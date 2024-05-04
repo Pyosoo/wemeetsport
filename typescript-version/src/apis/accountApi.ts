@@ -8,6 +8,6 @@ interface ApiResponse {
   }
 
 export const getAlarmListApi = async () => {
-    // accessTOken으로 받으면 되듯
+    // accessToken으로 받으면 되듯
     const res = await axios.get(`${API_URL}/test`,)
 }

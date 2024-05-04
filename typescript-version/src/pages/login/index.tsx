@@ -82,7 +82,22 @@ const LoginPage = () => {
     setIsLoading(true);
     const res = await loginApi(loginInfo.email, loginInfo.password);
     if (res && res.success) {
-      const resData: sessionInterface = jwtDecode(res.data.accessToken);
+      let accessToken: string = '';
+      let refreshToken: string = '';
+
+      if (typeof res.data === 'object' && res.data !== null) {
+        const responseData = res.data as { accessToken?: string; refreshToken?: string };
+
+        if (responseData.accessToken) {
+          accessToken = responseData.accessToken;
+        }
+
+        if (responseData.refreshToken) {
+          refreshToken = responseData.refreshToken;
+        }
+      }
+
+      const resData: sessionInterface = jwtDecode(accessToken);
       setSessionState(prev => ({
         ...prev,
         state: true,
@@ -91,8 +106,8 @@ const LoginPage = () => {
         mobile: resData.mobile,
         exp: resData.exp,
         iat: resData.iat,
-        accessToken: res.data.accessToken,
-        refreshToken: res.data.refreshToken
+        accessToken: accessToken,
+        refreshToken: refreshToken
       }));
       router.push('/');
       setIsLoading(false);
@@ -101,7 +116,7 @@ const LoginPage = () => {
         ...prev,
         open: true,
         type: 'error',
-        message: '로그인 오류'
+        message: res.data
       }));
       setIsLoading(false);
     }

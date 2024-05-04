@@ -1,28 +1,15 @@
 import axios, { AxiosResponse } from 'axios';
 import Cookies from 'js-cookie';
+import { ApiResponseInterface, boardApplyTypeInterface, getBoardTypeInterface, makeBoardTypeInterface } from 'src/interfaces/interfaces';
 const API_URL = 'http://54.204.129.209:8080';
 
-interface getBoardType {
-  category: string;
-  type: string;
-  pageNo: number;
-  pageSize: number;
-  search: string;
-  searchOption: string;
-  from: string,
-  to: string;
-}
-interface ApiResponse {
-  success: boolean;
-  data: string | object | undefined;
-}
 
-export const getBoardApi = async (props: getBoardType) => {
+export const getBoardApi = async (props: getBoardTypeInterface) => {
   const res = await axios
     .get(`${API_URL}/board/list`, {
       params: { ...props }
     })
-    .then((response: AxiosResponse<ApiResponse>) => response.data)
+    .then((response: AxiosResponse<ApiResponseInterface>) => response.data)
     .catch(err => {
       console.log(err);
     });
@@ -30,21 +17,7 @@ export const getBoardApi = async (props: getBoardType) => {
   return res;
 };
 
-interface makeBoardType {
-  category: string;
-  type: string;
-  title: string;
-  content: string;
-  matchDate: string;
-}
-
-interface boardApplyType{
-  boardNo: string;
-  applicantEmail: string;
-  message: string;
-}
-
-export const makeBoardApi = async (props: makeBoardType) => {
+export const makeBoardApi = async (props: makeBoardTypeInterface) => {
   const res = await axios
     .post(
       `${API_URL}/board/api/register`,
@@ -57,7 +30,7 @@ export const makeBoardApi = async (props: makeBoardType) => {
         }
       }
     )
-    .then((response: AxiosResponse<ApiResponse>) => response.data)
+    .then((response: AxiosResponse<ApiResponseInterface>) => response.data)
     .catch(err => {
       console.log(err);
     });
@@ -68,7 +41,7 @@ export const makeBoardApi = async (props: makeBoardType) => {
 export const getBoardItemApi = async (boardNo: string) => {
   const res = await axios
     .get(`${API_URL}/board/${boardNo}`)
-    .then((response: AxiosResponse<ApiResponse>) => response.data)
+    .then((response: AxiosResponse<ApiResponseInterface>) => response.data)
     .catch(err => {
       console.log(err);
     });
@@ -78,25 +51,8 @@ export const getBoardItemApi = async (boardNo: string) => {
 
 
 
-export const boardApply = async (props: boardApplyType) => {
+export const boardApply = async (props: boardApplyTypeInterface) => {
   console.log(props);
   return ;
-  const res = await axios
-    .post(
-      `${API_URL}/board/api/register`,
-      {
-        ...props
-      },
-      {
-        headers: {
-          Authorization: `Bearer ${Cookies.get('WMS_accessToken')}`
-        }
-      }
-    )
-    .then((response: AxiosResponse<ApiResponse>) => response.data)
-    .catch(err => {
-      console.log(err);
-    });
-
-  return res;
+  
 };

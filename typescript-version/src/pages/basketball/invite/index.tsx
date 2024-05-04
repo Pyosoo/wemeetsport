@@ -9,23 +9,13 @@ import CustomSearchBar from 'src/components/customSearchBar';
 import CustomTable from 'src/components/customTable';
 import useSession from 'src/hooks/useSession';
 import { pageDataState, tableDataState } from 'src/recoil/table';
-
-interface tableRow {
-  boardNo: number;
-  category: string;
-  content: string;
-  createdAt: string;
-  email: string;
-  matchDate: string;
-  nickName: string;
-  status: string;
-  title: string;
-  type: string;
-}
+import dayjs from 'dayjs';
+import { snackbarState } from 'src/recoil/states';
 
 const Page = () => {
   const [pageData, setPageData] = useRecoilState(pageDataState);
   const [tableData, setTableData] = useRecoilState(tableDataState);
+  const [snackbarStateRC, setSnackbarStateRC] = useRecoilState(snackbarState);
 
   useSession();
 
@@ -45,6 +35,13 @@ const Page = () => {
         setTableData(() => ({
           datas: res.data.dtoList
         }));
+      } else {
+        setSnackbarStateRC(prev => ({
+          ...prev,
+          open: true,
+          message: '목록을 불러오는데 실패했습니다.',
+          type: 'error'
+        }));
       }
     };
     getBoard();
@@ -55,8 +52,8 @@ const Page = () => {
         pageSize: 10,
         search: '',
         searchOption: 'title',
-        from: moment(new Date()).format('YYYY-MM-DD'),
-        to: moment(new Date()).format('YYYY-MM-DD')
+        from: dayjs().subtract(1, 'year').format('YYYY-MM-DD'),
+        to: dayjs(new Date()).format('YYYY-MM-DD')
       }));
     };
   }, []);
@@ -75,7 +72,6 @@ const Page = () => {
         ) : (
           <Box sx={{ textAlign: 'center', marginTop: '50px' }}>검색조건에 맞는 글이 없습니다.</Box>
         )}
-        {/* <CustomTable tableData={tableData} /> */}
       </Grid>
     </Grid>
   );

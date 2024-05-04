@@ -9,6 +9,7 @@ import Paper from '@mui/material/Paper';
 import { getBoardItemApi } from 'src/apis/tableApi';
 import { useRecoilState } from 'recoil';
 import { selectedBoardItem } from 'src/recoil/table';
+import { tableRowInterface } from 'src/interfaces/interfaces';
 import router from 'next/router';
 
 const rows = [
@@ -20,21 +21,8 @@ const rows = [
   }
 ];
 
-interface tableRow {
-  boardNo: number;
-  category: string;
-  content: string;
-  createdAt: string;
-  email: string;
-  matchDate: string;
-  nickName: string;
-  status: string;
-  title: string;
-  type: string;
-}
-
 interface propTypes {
-  tableData: tableRow[];
+  tableData: tableRowInterface[];
 }
 
 export default function CustomTable(props: propTypes) {

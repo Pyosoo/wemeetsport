@@ -7,13 +7,16 @@ import Select, { SelectChangeEvent } from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import Button from '@mui/material/Button';
 import { getBoardApi } from 'src/apis/tableApi';
-import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import router from 'next/router';
 import moment from 'moment';
+import { LoadingButton } from '@mui/lab';
 import dayjs from 'dayjs';
+
+// date picker
+import { DemoContainer, DemoItem } from '@mui/x-date-pickers/internals/demo';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { DateRangePicker } from '@mui/x-date-pickers-pro/DateRangePicker';
 
 interface SearchBarProps {
   category: string;
@@ -23,8 +26,13 @@ interface SearchBarProps {
 export default function CustomSearchBar(props: SearchBarProps) {
   const [pageData, setPageDataState] = useRecoilState(pageDataState);
   const [tableData, setTableDataState] = useRecoilState(tableDataState);
+  const [isLoading, setIsLoading] = React.useState(false);
 
   const SearchList = async () => {
+    if (isLoading) return;
+
+    setIsLoading(true);
+
     const res = await getBoardApi({
       category: props.category,
       type: props.type,
@@ -35,59 +43,32 @@ export default function CustomSearchBar(props: SearchBarProps) {
       from: pageData.from,
       to: pageData.to
     });
-    console.log(res);
     if (res && res.success) {
       console.log(res);
       setTableDataState(() => ({
         datas: res.data.dtoList
       }));
+      setIsLoading(false);
       return res;
+    } else {
+      setIsLoading(false);
     }
   };
 
   return (
-    <Box
-      component='form'
-      sx={{
-        '& .MuiTextField-root': { m: 1, width: '25ch' }
-      }}
-      noValidate
-      autoComplete='off'
-    >
-      <Box sx={{ display: 'flex' }}>
-        <Box sx={{ display: 'flex', marginLeft: 'auto' }}>
-          <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <DemoContainer sx={{ padding: '0 !important' }} components={['DatePicker']}>
-              <DatePicker
-                // value={dayjs(pageData.from).toDate()}
-                onChange={date => {
-                  setPageDataState(prev => ({
-                    ...prev,
-                    from: dayjs(date).format('YYYY-MM-DD')
-                  }));
-                }}
-                label='시작일'
-              />
-            </DemoContainer>
-          </LocalizationProvider>
-          <Box sx={{ height: '50px', lineHeight: '50px', marginTop: '10px' }}>~</Box>
-          <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <DemoContainer sx={{ padding: '0 !important' }} components={['DatePicker']}>
-              <DatePicker
-                // value={pageData.to}
-                onChange={date => {
-                  setPageDataState(prev => ({
-                    ...prev,
-                    to: dayjs(date).format('YYYY-MM-DD')
-                  }));
-                }}
-                label='마감일'
-              />
-            </DemoContainer>
-          </LocalizationProvider>
-        </Box>
+    <Box>
+      <Box sx={{ display: 'flex', justifyContent: 'right', margin: '10px 0' }}>
+        <LocalizationProvider dateAdapter={AdapterDayjs}>
+          <DemoContainer components={['DateRangePicker', 'DateRangePicker']}>
+            <DemoItem component='DateRangePicker'>
+              <DateRangePicker localeText='asd' defaultValue={[dayjs(pageData.from), dayjs(pageData.to)]} />
+            </DemoItem>
+          </DemoContainer>
+        </LocalizationProvider>
+      </Box>
+      <Box sx={{ display: 'flex', justifyContent: 'right', gap: '5px', marginBottom: '10px' }}>
         <Select
-          sx={{ width: 170, height: 55, marginTop: '3.5px' }}
+          sx={{ width: 170, height: 40 }}
           value={pageData.searchOption}
           label='Age'
           onChange={(e: SelectChangeEvent<string>) => {
@@ -115,21 +96,30 @@ export default function CustomSearchBar(props: SearchBarProps) {
           label='검색어'
           id='outlined-size-small'
           defaultValue='검색어'
+          size='small'
+          sx={{ minWidth: '100px' }}
         />
-        <Button
-          onMouseOver={() => console.log(pageData)}
-          sx={{ height: 55, marginTop: '3.5px' }}
-          variant='outlined'
-          onClick={SearchList}
-        >
-          검색
-        </Button>
+        {isLoading ? (
+          <LoadingButton
+            sx={{ display: 'block', width: '72.6px', height: '40px' }}
+            size='large'
+            loading
+            variant='outlined'
+          >
+            .
+          </LoadingButton>
+        ) : (
+          <Button
+            onMouseOver={() => console.log(pageData)}
+            sx={{ minWidth: '70px', height: 40 }}
+            variant='outlined'
+            onClick={SearchList}
+          >
+            검색
+          </Button>
+        )}
 
-        <Button
-          sx={{ margin: '0 5px 0 5px', height: 55, marginTop: '3.5px' }}
-          variant='contained'
-          onClick={() => router.push('/makeboard')}
-        >
+        <Button sx={{ minWidth: '100px', height: 40 }} variant='contained' onClick={() => router.push('/makeboard')}>
           글쓰기
         </Button>
       </Box>
