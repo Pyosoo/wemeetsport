@@ -54,7 +54,7 @@ export default function BoardItem() {
       setSnackbarStateRC(prev => ({
         ...prev,
         open: true,
-        message: res.data,
+        message: '오류',
         type: 'error'
       }));
     }

@@ -8,7 +8,7 @@ const { persistAtom } = recoilPersist({
   storage: localStorage
 });
 
-export const alaramList = atom({
+export const alarmList = atom({
   key: 'selectedBoardItem',
   default: [],
   effects_UNSTABLE: [persistAtom]

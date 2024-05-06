@@ -1,6 +1,6 @@
 // account
 
-export interface alaramInterface {
+export interface alarmInterface {
     id: string;
     boardNo: number;
     title: string;
@@ -11,12 +11,12 @@ export interface alaramInterface {
     category: string;
     status: string; // complet progress reject 신청자체의 status
     message: string;
+    // alarmType: string; // 'text' or 'apply'
 }
 
 
 
 // table
-
 
 export interface tableRowInterface {
     boardNo: number;
@@ -32,7 +32,7 @@ export interface tableRowInterface {
   }
 
 
-  // api
+// api
   
 export interface ApiResponseInterface {
     success: boolean;

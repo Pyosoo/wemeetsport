@@ -7,6 +7,7 @@ import { Input } from '@mui/material';
 import Button from '@mui/material/Button';
 import { selectedBoardItem } from 'src/recoil/table';
 import { sessionState } from 'src/recoil/user';
+import { boardApply } from 'src/apis/tableApi';
 
 const style = {
   position: 'absolute' as 'absolute',
@@ -36,12 +37,24 @@ export default function CustomModal() {
     }));
   };
 
-  const handleApply = () => {
+  const handleApply = async () => {
     const params = {
       boardNo: selectedBoardItemRC.boardNo,
-      applicantEmail: sessionStateRC.email,
+      // applicantEmail: sessionStateRC.email,
       message: modalRC.message
     };
+
+    const handleBoardApply = async () => {
+      const res = await boardApply(params);
+      if (res && res.success) {
+        console.log(res);
+      } else {
+        console.log(res);
+      }
+    };
+
+    handleBoardApply();
+
     console.log(params);
   };
 

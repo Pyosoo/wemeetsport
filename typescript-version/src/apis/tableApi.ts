@@ -52,7 +52,16 @@ export const getBoardItemApi = async (boardNo: string) => {
 
 
 export const boardApply = async (props: boardApplyTypeInterface) => {
-  console.log(props);
-  return ;
-  
+  const res = await axios
+    .post(`${API_URL}/alarm/api/`,
+      {...props},
+      {
+        headers: {
+          Authorization: `Bearer ${Cookies.get('WMS_accessToken')}`
+        }
+      }
+    ).then((response: AxiosResponse<ApiResponseInterface>) => response.data)
+    
+    
+  return res;
 };
