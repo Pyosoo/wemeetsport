@@ -21,7 +21,7 @@ export default function AlarmRow({ alarm }: { alarm: alarmInterface }) {
         '&:hover': { cursor: 'pointer' }
       }}
     >
-      {alarm.title} /
+      test
     </Box>
   );
 }

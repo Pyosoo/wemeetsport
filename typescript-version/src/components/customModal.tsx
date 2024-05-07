@@ -2,12 +2,13 @@ import * as React from 'react';
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import { useRecoilState, useRecoilValue } from 'recoil';
-import { modalState } from 'src/recoil/states';
+import { modalState, snackbarState } from 'src/recoil/states';
 import { Input } from '@mui/material';
 import Button from '@mui/material/Button';
 import { selectedBoardItem } from 'src/recoil/table';
 import { sessionState } from 'src/recoil/user';
 import { boardApply } from 'src/apis/tableApi';
+import router from 'next/router';
 
 const style = {
   position: 'absolute' as 'absolute',
@@ -27,6 +28,7 @@ const style = {
 
 export default function CustomModal() {
   const [modalRC, setModalRC] = useRecoilState(modalState);
+  const [snackbarStateRC, setSnackbarStateRC] = useRecoilState(snackbarState);
   const selectedBoardItemRC = useRecoilValue(selectedBoardItem);
   const sessionStateRC = useRecoilValue(sessionState);
 
@@ -47,9 +49,18 @@ export default function CustomModal() {
     const handleBoardApply = async () => {
       const res = await boardApply(params);
       if (res && res.success) {
-        console.log(res);
+        setSnackbarStateRC(() => ({
+          open: true,
+          type: 'success',
+          message: '신청이 완료되었습니다.'
+        }));
+        router.back();
       } else {
-        console.log(res);
+        setSnackbarStateRC(() => ({
+          open: true,
+          type: 'error',
+          message: '신청에 실패했습니다.'
+        }));
       }
     };
 

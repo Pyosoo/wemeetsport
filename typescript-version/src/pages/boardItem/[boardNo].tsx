@@ -8,6 +8,7 @@ import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import { sessionState } from 'src/recoil/user';
 import { modalState, snackbarState } from 'src/recoil/states';
+import { boardApply } from 'src/apis/tableApi';
 
 const boardType = {
   invite: '시합 초청',
@@ -37,27 +38,27 @@ export default function BoardItem() {
       return;
     }
 
-    const res = await setModalRC(prev => ({
+    setModalRC(prev => ({
       ...prev,
       open: true,
       type: 'invite'
     }));
 
-    if (res && res.success) {
-      setSnackbarStateRC(prev => ({
-        ...prev,
-        open: true,
-        message: '신청되었습니다.',
-        type: 'success'
-      }));
-    } else {
-      setSnackbarStateRC(prev => ({
-        ...prev,
-        open: true,
-        message: '오류',
-        type: 'error'
-      }));
-    }
+    // if (res && res.success) {
+    //   setSnackbarStateRC(prev => ({
+    //     ...prev,
+    //     open: true,
+    //     message: '신청되었습니다.',
+    //     type: 'success'
+    //   }));
+    // } else {
+    //   setSnackbarStateRC(prev => ({
+    //     ...prev,
+    //     open: true,
+    //     message: '오류',
+    //     type: 'error'
+    //   }));
+    // }
   };
 
   return (

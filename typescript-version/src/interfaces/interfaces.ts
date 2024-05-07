@@ -60,7 +60,7 @@ export interface makeBoardTypeInterface {
   
 export interface boardApplyTypeInterface{
     boardNo: string;
-    applicantEmail: string;
+    // applicantEmail: string;
     message: string;
   }
   

@@ -1,11 +1,14 @@
 import axios, { AxiosResponse } from 'axios';
 import Cookies from 'js-cookie';
 import { ApiResponseInterface } from 'src/interfaces/interfaces';
+import { checkSession } from './userApi';
 const API_URL = 'http://54.204.129.209:8080';
 
 
 export const getAlarmListApi = async () => {
-    const res = await axios.get(`${API_URL}/alarm/api/`,{
+    checkSession();
+
+    return await axios.get(`${API_URL}/alarm/api/`,{
       headers: {
         Authorization: `Bearer ${Cookies.get('WMS_accessToken')}`
       }
@@ -15,5 +18,4 @@ export const getAlarmListApi = async () => {
       console.log(err)
     })
 
-    return res;
 }

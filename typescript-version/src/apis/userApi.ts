@@ -1,12 +1,13 @@
 import axios, { AxiosResponse } from 'axios';
 import Cookies from 'js-cookie';
+import { jwtDecode } from 'jwt-decode';
 import { ApiResponseInterface, registerTypeInterface } from 'src/interfaces/interfaces';
 
 const API_URL = 'http://54.204.129.209:8080';
 
 
 export const loginApi = async (email: string, password: string) => {
-  const res = await axios
+  return await axios
     .post(`${API_URL}/member/login`, {
       email,
       password
@@ -43,13 +44,12 @@ export const loginApi = async (email: string, password: string) => {
       console.error(err);
     });
 
-  return res;
 };
 
 
 
 export const refreshToken = async (accessToken: string, refreshToken: string) => {
-  const res = await axios
+  return await axios
     .post(`${API_URL}/refreshToken`, {
       accessToken,
       refreshToken
@@ -59,11 +59,10 @@ export const refreshToken = async (accessToken: string, refreshToken: string) =>
       console.log(err);
     });
 
-  return res;
 };
 
 export const signUpApi = (props: registerTypeInterface) => {
-  const res = axios
+  return axios
     .post(`${API_URL}/member/signup`, {
       ...props
     })
@@ -72,5 +71,51 @@ export const signUpApi = (props: registerTypeInterface) => {
       console.log(err);
     });
 
-  return res;
 };
+
+
+
+interface atInterface {
+  mobile: string;
+  exp: string;
+  iat: string;
+  nickName: string;
+  email: string;
+}
+
+export const checkSession = () => {
+  console.log("checksession 실행")
+  const at = Cookies.get('WMS_accessToken');
+  const rt = Cookies.get('WMS_refreshToken');
+
+  const refreshSession = async () => {
+    const res = await refreshToken(at, rt);
+    if (res && res.success) {
+      Cookies.set('WMS_accessToken', res.data.accessToken);
+      Cookies.set('WMS_refreshToken', res.data.refreshToken);
+    } else {
+      Cookies.remove('WMS_accessToken');
+      Cookies.remove('WMS_refreshToken');
+      window.location.href = '/login'; 
+    }
+  };
+
+  if(!at || !rt){
+    window.location.href = '/login'; 
+  }
+
+  if (at && rt) {
+    const atDecoded: atInterface = jwtDecode(at);
+    const cur = new Date().getTime();
+    const sessionExpTime = parseInt(atDecoded.exp + '000');
+
+    if (cur > sessionExpTime) {
+      console.log('refreshToken!');
+      refreshSession();
+    } else {
+      console.log('Token is alive.');
+    }
+  } else {
+    window.location.href = '/login'; 
+  }
+}
