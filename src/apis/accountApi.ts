@@ -17,5 +17,10 @@ export const getAlarmListApi = async () => {
     .catch(err => {
       console.log(err)
     })
+}
 
+export const decideAlarmApi = async () => {
+  checkSession();
+
+  console.log("decideAlarm");
 }
