@@ -38,7 +38,7 @@ const Page = () => {
 
   if (alarmListRC && alarmListRC.length > 0) {
     return (
-      <List height={150} itemCount={alarmListRC.length} itemSize={55} width='85%' itemData='Additional Data'>
+      <List height={600} itemCount={alarmListRC.length} itemSize={55} width='100%' itemData='Additional Data'>
         {({ index, style }) => Row({ index, style, data: alarmListRC[index] })}
       </List>
     );

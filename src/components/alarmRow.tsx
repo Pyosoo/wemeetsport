@@ -6,6 +6,7 @@ export default function AlarmRow({ alarm }: { alarm: alarmInterface }) {
   // if (alarm.alarmType === 'text')
   return (
     <Box
+      onClick={() => console.log(alarm)}
       sx={{
         backgroundColor: 'rgb(229 224 224)',
         borderRadius: '7px',

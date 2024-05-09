@@ -41,6 +41,9 @@ const ContentWrapper = styled('main')(({ theme }) => ({
   width: '100%',
   padding: theme.spacing(6),
   transition: 'padding .25s ease-in-out',
+  overflow: 'auto', // 이 부분을 추가하여 스크롤이 생기도록 설정합니다.
+  backgroundColor: '#fbfbfb',
+  borderRadius: '5px',
   [theme.breakpoints.down('sm')]: {
     paddingLeft: theme.spacing(4),
     paddingRight: theme.spacing(4)
