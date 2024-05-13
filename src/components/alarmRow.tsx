@@ -1,4 +1,5 @@
 import { Box } from '@mui/material';
+import dayjs from 'dayjs';
 import React from 'react';
 import { alarmInterface } from 'src/interfaces/interfaces';
 
@@ -22,7 +23,7 @@ export default function AlarmRow({ alarm }: { alarm: alarmInterface }) {
         '&:hover': { cursor: 'pointer' }
       }}
     >
-      test
+      <Box>{dayjs(alarm.createdAt).format('YYYY-MM-DD')}</Box>
     </Box>
   );
 }
