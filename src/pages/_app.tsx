@@ -34,6 +34,7 @@ import '../../styles/globals.css';
 import { RecoilRoot } from 'recoil';
 import CustomSnackbar from 'src/components/snackbar';
 import CustomModal from 'src/components/customModal';
+import CustomModal2 from 'src/components/customModal2';
 
 // ** Extend App Props with Emotion
 type ExtendedAppProps = AppProps & {
@@ -78,6 +79,7 @@ const App = (props: ExtendedAppProps) => {
                   {getLayout(<Component {...pageProps} />)}
                   <CustomSnackbar />
                   <CustomModal />
+                  <CustomModal2 />
                 </ThemeComponent>
               );
             }}

@@ -12,11 +12,9 @@ import moment from 'moment';
 import { LoadingButton } from '@mui/lab';
 import dayjs from 'dayjs';
 
-// date picker
-import { DemoContainer, DemoItem } from '@mui/x-date-pickers/internals/demo';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { DateRangePicker } from '@mui/x-date-pickers-pro/DateRangePicker';
+import { DatePicker, Space } from 'antd';
+
+const { RangePicker } = DatePicker;
 
 interface SearchBarProps {
   category: string;
@@ -58,13 +56,22 @@ export default function CustomSearchBar(props: SearchBarProps) {
   return (
     <Box>
       <Box sx={{ display: 'flex', justifyContent: 'right', margin: '10px 0' }}>
-        <LocalizationProvider dateAdapter={AdapterDayjs}>
+        <RangePicker
+          onChange={(dates, dateStrings) => {
+            setPageDataState(prev => ({
+              ...prev,
+              from: dayjs(dateStrings[0]).format('YYYY-MM-DD'),
+              to: dayjs(dateStrings[1]).format('YYYY-MM-DD')
+            }));
+          }}
+        />
+        {/* <LocalizationProvider dateAdapter={AdapterDayjs}>
           <DemoContainer components={['DateRangePicker', 'DateRangePicker']}>
             <DemoItem component='DateRangePicker'>
-              <DateRangePicker localeText='asd' defaultValue={[dayjs(pageData.from), dayjs(pageData.to)]} />
+              <DateRangePicker defaultValue={[dayjs(pageData.from), dayjs(pageData.to)]} />
             </DemoItem>
           </DemoContainer>
-        </LocalizationProvider>
+        </LocalizationProvider> */}
       </Box>
       <Box sx={{ display: 'flex', justifyContent: 'right', gap: '5px', marginBottom: '10px' }}>
         <Select

@@ -43,24 +43,24 @@ const navigation = (): VerticalNavItemsType => {
       icon: CreditCardOutline,
       path: '/basketball/rental'
     },
-    // {
-    //   sectionTitle: '축구'
-    // },
-    // {
-    //   title: '시합 초청',
-    //   icon: FormatLetterCase,
-    //   path: '/soccer/invite'
-    // },
-    // {
-    //   title: '팀원 모집',
-    //   path: '/soccer/recruit',
-    //   icon: GoogleCirclesExtended
-    // },
-    // {
-    //   title: '대관 정보',
-    //   icon: CreditCardOutline,
-    //   path: '/soccer/rental'
-    // }
+    {
+      sectionTitle: '축구'
+    },
+    {
+      title: '시합 초청',
+      icon: FormatLetterCase,
+      path: '/soccer/invite'
+    },
+    {
+      title: '팀원 모집',
+      path: '/soccer/recruit',
+      icon: GoogleCirclesExtended
+    },
+    {
+      title: '대관 정보',
+      icon: CreditCardOutline,
+      path: '/soccer/rental'
+    }
     // {
     //   title: 'Tables',
     //   icon: Table,

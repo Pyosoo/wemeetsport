@@ -19,8 +19,20 @@ export const getAlarmListApi = async () => {
     })
 }
 
-export const decideAlarmApi = async () => {
+export const decideAlarmApi = async (alarmNo: number, approve: boolean) => {
   checkSession();
 
-  console.log("decideAlarm");
+  return await axios.post(`${API_URL}/alarm/api/status`, {
+    alarmNo,
+    approve
+  },{
+    headers:{
+      Authorization: `Bearer ${Cookies.get('WMS_accessToken')}`
+    }
+  })
+  .then((response: AxiosResponse<ApiResponseInterface>) => response.data)
+  .catch(err => {
+    console.log(err)
+  })
+
 }

@@ -1,8 +1,7 @@
-// ** MUI Imports
+// pages/[sport]/invite/index.tsx
 import { Box } from '@mui/material';
 import Grid from '@mui/material/Grid';
-import moment from 'moment';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useRecoilState } from 'recoil';
 import { getBoardApi } from 'src/apis/tableApi';
 import CustomSearchBar from 'src/components/customSearchBar';
@@ -11,18 +10,21 @@ import useSession from 'src/hooks/useSession';
 import { pageDataState, tableDataState } from 'src/recoil/table';
 import dayjs from 'dayjs';
 import { snackbarState } from 'src/recoil/states';
+import { tableRowInterface } from 'src/interfaces/interfaces';
+import { useRouter } from 'next/router';
 
-const Page = () => {
+const InvitePage = ({ sport }) => {
   const [pageData, setPageData] = useRecoilState(pageDataState);
   const [tableData, setTableData] = useRecoilState(tableDataState);
   const [snackbarStateRC, setSnackbarStateRC] = useRecoilState(snackbarState);
 
   useSession();
+  const router = useRouter();
 
   useEffect(() => {
     const getBoard = async () => {
       const res = await getBoardApi({
-        category: 'basketball',
+        category: sport,
         type: 'invite',
         pageNo: pageData.pageNo,
         pageSize: pageData.pageSize,
@@ -31,9 +33,11 @@ const Page = () => {
         from: pageData.from,
         to: pageData.to
       });
+
       if (res && res.success) {
+        const data = res.data as { dtoList: tableRowInterface[] };
         setTableData(() => ({
-          datas: res.data.dtoList
+          datas: data.dtoList
         }));
       } else {
         setSnackbarStateRC(prev => ({
@@ -56,7 +60,7 @@ const Page = () => {
         to: dayjs(new Date()).format('YYYY-MM-DD')
       }));
     };
-  }, []);
+  }, [sport]);
 
   console.log(pageData);
   console.log(tableData);
@@ -65,9 +69,9 @@ const Page = () => {
     <Grid container spacing={6} sx={{ minWidth: '1070px' }}>
       <Grid item xs={12}>
         <div>
-          <CustomSearchBar category='basketball' type='invite' />
+          <CustomSearchBar category={sport} type='invite' />
         </div>
-        {tableData.datas !== null && tableData.datas.length > 0 ? (
+        {tableData && tableData.datas && tableData.datas.length > 0 ? (
           <CustomTable tableData={tableData.datas} />
         ) : (
           <Box sx={{ textAlign: 'center', marginTop: '50px' }}>검색조건에 맞는 글이 없습니다.</Box>
@@ -77,4 +81,13 @@ const Page = () => {
   );
 };
 
-export default Page;
+export async function getServerSideProps(context) {
+  const { sport } = context.params;
+  return {
+    props: {
+      sport
+    }
+  };
+}
+
+export default InvitePage;

@@ -9,7 +9,7 @@ export interface alarmInterface {
   applicant: string;
   type: string;
   category: string;
-  status: string; // complet progress reject 신청자체의 status
+  status: string; // complete progress reject 신청자체의 status
   message: string;
   alarmType: string;
   createdAt: string;

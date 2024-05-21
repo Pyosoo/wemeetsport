@@ -27,5 +27,16 @@ const modalState = atom({
   }
 })
 
+const applyModalState = atom({
+  key:'applyModalState',
+  default:{
+    open: false,
+    message: '',
+    title: '',
+    applicant: '',
+    alarmNo: 0
+  }
+})
 
-export { snackbarState, modalState };
+
+export { snackbarState, modalState, applyModalState };
