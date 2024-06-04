@@ -35,6 +35,7 @@ import { loginApi } from 'src/apis/userApi';
 import { jwtDecode } from 'jwt-decode';
 import { LoadingButton } from '@mui/lab';
 import { snackbarState } from 'src/recoil/states';
+import Image from 'next/image';
 
 // ** Styled Components
 const Card = styled(MuiCard)<CardProps>(({ theme }) => ({
@@ -126,15 +127,8 @@ const LoginPage = () => {
     <Box className='content-center'>
       <Card sx={{ zIndex: 1 }}>
         <CardContent sx={{ padding: theme => `${theme.spacing(12, 9, 7)} !important` }}>
-          logo
-          <Box sx={{ mb: 6 }}>
-            <Typography
-              variant='h5'
-              sx={{ fontWeight: 600, marginBottom: 1.5, display: 'block', marginLeft: 'auto', marginRight: 'auto' }}
-            >
-              WE MEET SPORT
-            </Typography>
-          </Box>
+          <Image src='/images/WMS_Logo.png' alt='we meet sport' width={600} height={273} />
+
           <form noValidate autoComplete='off' onSubmit={e => e.preventDefault()}>
             <TextField
               value={loginInfo.email}

@@ -89,6 +89,7 @@ export const checkSession = () => {
   const rt = Cookies.get('WMS_refreshToken');
 
   const refreshSession = async () => {
+    if (!at || !rt) return; // 타입스크립트가 at와 rt가 string임을 인식하도록 합니다.
     const res = await refreshToken(at, rt);
     if (res && res.success) {
       Cookies.set('WMS_accessToken', res.data.accessToken);

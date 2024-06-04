@@ -31,10 +31,18 @@ export interface tableRowInterface {
 }
 
 // api
-
 export interface ApiResponseInterface {
   success: boolean;
-  data: string | object;
+  data: {
+    dtoList: tableRowInterface[];
+    end: number;
+    next: boolean;
+    pageNo: number;
+    pageSize: number;
+    prev: boolean;
+    start: number;
+    total: number;
+  } 
 }
 
 export interface getBoardTypeInterface {

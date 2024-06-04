@@ -5,6 +5,7 @@ import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import { applyModalState, modalState, snackbarState } from 'src/recoil/states';
 import Button from '@mui/material/Button';
 import { decideAlarmApi, getAlarmListApi } from 'src/apis/accountApi';
+import { LoadingButton } from '@mui/lab';
 
 const style = {
   position: 'absolute' as 'absolute',
@@ -24,6 +25,7 @@ const style = {
 export default function CustomModal2() {
   const [applyModalStateRC, setApplyModalStateRC] = useRecoilState(applyModalState);
   const setSnackbarStateRC = useSetRecoilState(snackbarState);
+  const [isLoading, setIsLoading] = React.useState<boolean>(false);
 
   const handleClose = () => {
     setApplyModalStateRC(() => ({
@@ -36,8 +38,10 @@ export default function CustomModal2() {
   };
 
   const handleProcess = async (result: boolean) => {
+    setIsLoading(true);
     const res = await decideAlarmApi(applyModalStateRC.alarmNo, result);
     if (res && res.success) {
+      setIsLoading(false);
       setSnackbarStateRC(() => ({
         open: true,
         message: '요청처리가 완료되었습니다.',
@@ -52,6 +56,7 @@ export default function CustomModal2() {
       }));
       getAlarmListApi();
     } else {
+      setIsLoading(false);
       setSnackbarStateRC(() => ({
         open: true,
         message: '요청처리에 오류가 발생했습니다.',
@@ -81,14 +86,28 @@ export default function CustomModal2() {
             <Box sx={{ color: '#06068c', fontWeight: 800, fontSize: 16 }}>메시지</Box>
             <Box>{applyModalStateRC.message}</Box>
           </Box>
-          <Box sx={{ display: 'flex', justifyContent: 'center', margin: '20px 0' }}>
-            <Button sx={{ margin: '0 10px' }} onClick={() => handleProcess(true)} variant='contained'>
-              승인
-            </Button>
-            <Button sx={{ margin: '0 10px' }} onClick={() => handleProcess(false)} variant='contained'>
-              거절
-            </Button>
-          </Box>
+
+          {isLoading ? (
+            <LoadingButton
+              sx={{ display: 'block', width: '72.6px', margin: '15px auto 0 auto' }}
+              size='large'
+              loading
+              variant='outlined'
+            >
+              .
+            </LoadingButton>
+          ) : (
+            <>
+              <Box sx={{ display: 'flex', justifyContent: 'center', margin: '20px 0' }}>
+                <Button sx={{ margin: '0 10px' }} onClick={() => handleProcess(true)} variant='contained'>
+                  승인
+                </Button>
+                <Button sx={{ margin: '0 10px' }} onClick={() => handleProcess(false)} variant='contained'>
+                  거절
+                </Button>
+              </Box>
+            </>
+          )}
         </Box>
       </Modal>
     </div>

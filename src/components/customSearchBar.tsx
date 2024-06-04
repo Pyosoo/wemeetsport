@@ -1,8 +1,8 @@
 import * as React from 'react';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
-import { useRecoilState } from 'recoil';
-import { pageDataState, tableDataState } from 'src/recoil/table';
+import { useRecoilState, useRecoilValueLoadable } from 'recoil';
+import { pageDataState, tableDataState, tableDataStateQuery } from 'src/recoil/table';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import Button from '@mui/material/Button';
@@ -42,7 +42,6 @@ export default function CustomSearchBar(props: SearchBarProps) {
       to: pageData.to
     });
     if (res && res.success) {
-      console.log(res);
       setTableDataState(() => ({
         datas: res.data.dtoList
       }));
@@ -65,13 +64,6 @@ export default function CustomSearchBar(props: SearchBarProps) {
             }));
           }}
         />
-        {/* <LocalizationProvider dateAdapter={AdapterDayjs}>
-          <DemoContainer components={['DateRangePicker', 'DateRangePicker']}>
-            <DemoItem component='DateRangePicker'>
-              <DateRangePicker defaultValue={[dayjs(pageData.from), dayjs(pageData.to)]} />
-            </DemoItem>
-          </DemoContainer>
-        </LocalizationProvider> */}
       </Box>
       <Box sx={{ display: 'flex', justifyContent: 'right', gap: '5px', marginBottom: '10px' }}>
         <Select
