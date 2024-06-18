@@ -31,18 +31,9 @@ export interface tableRowInterface {
 }
 
 // api
-export interface ApiResponseInterface {
+export interface ApiResponseInterface<T = any> {
   success: boolean;
-  data: {
-    dtoList: tableRowInterface[];
-    end: number;
-    next: boolean;
-    pageNo: number;
-    pageSize: number;
-    prev: boolean;
-    start: number;
-    total: number;
-  } 
+  data: T;
 }
 
 export interface getBoardTypeInterface {

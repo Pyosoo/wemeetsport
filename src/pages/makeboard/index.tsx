@@ -16,7 +16,7 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import moment from 'moment';
-import dayjs from 'dayjs';
+import dayjs, { Dayjs } from 'dayjs';
 
 export default function Makeboard() {
   const [makeBoard, setMakeBoardState] = useRecoilState(makeBoardState);
@@ -156,7 +156,7 @@ export default function Makeboard() {
             <LocalizationProvider dateAdapter={AdapterDayjs}>
               <DemoContainer components={['DatePicker']}>
                 <DatePicker
-                  onChange={(date: Date) => {
+                  onChange={(date: Dayjs | null) => {
                     console.log(date);
                     setMakeBoardState(prev => ({
                       ...prev,

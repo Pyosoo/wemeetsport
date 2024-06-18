@@ -35,7 +35,9 @@ const Recruit = () => {
         pageNo: pageData.pageNo,
         pageSize: pageData.pageSize,
         search: pageData.search,
-        searchOption: pageData.searchOption
+        searchOption: pageData.searchOption,
+        from: pageData.from,
+        to: pageData.to
       });
       if (res && res.success) {
         setTableData(() => ({

@@ -57,7 +57,7 @@ export default function CustomTable(props: propTypes) {
         </TableHead>
         <TableBody>
           {props.tableData && props.tableData.length > 0
-            ? props.tableData.map((row: tableRow) => (
+            ? props.tableData.map((row: tableRowInterface) => (
                 <TableRow
                   onClick={() => getBoardItem(row.boardNo)}
                   className='hover'

@@ -112,7 +112,7 @@ const LoginPage = () => {
       }));
       router.push('/');
       setIsLoading(false);
-    } else {
+    } else if (res && !res.success) {
       setSnackbarState(prev => ({
         ...prev,
         open: true,
@@ -120,6 +120,13 @@ const LoginPage = () => {
         message: res.data
       }));
       setIsLoading(false);
+    } else {
+      setSnackbarState(prev => ({
+        ...prev,
+        open: true,
+        type: 'error',
+        message: '알 수 없는 에러 발생'
+      }));
     }
   };
 
