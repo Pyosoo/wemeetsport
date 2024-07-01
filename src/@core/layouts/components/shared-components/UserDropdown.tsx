@@ -1,6 +1,6 @@
 // ** Styled Components
 const UserDropdown = () => {
-  return <>User drop down</>;
+  return <>로그 아웃</>;
 };
 
 export default UserDropdown;
