@@ -27,7 +27,6 @@ import EyeOffOutline from 'mdi-material-ui/EyeOffOutline';
 import BlankLayout from 'src/@core/layouts/BlankLayout';
 
 // ** Demo Imports
-import FooterIllustrationsV1 from 'src/views/pages/auth/FooterIllustration';
 import { useRecoilState } from 'recoil';
 import { sessionState, loginState } from 'src/recoil/user';
 import { useRecoilLogger } from 'src/hooks/useRecoilLogger';
@@ -217,7 +216,6 @@ const LoginPage = () => {
           </form>
         </CardContent>
       </Card>
-      <FooterIllustrationsV1 />
     </Box>
   );
 };
